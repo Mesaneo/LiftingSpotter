@@ -3,32 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exercise Guide & Tracker</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Lifting Spotter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- 1. GLOBAL APP STYLES (Light Mode) --- */
+        html { height: 100%; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f4f4f4; color: #333;
+            display: flex; flex-direction: column;
+            height: 100vh; margin: 0; padding: 20px; box-sizing: border-box;
+        }
+
+        /* Card Container */
+        .exercise-card {
+            background-color: #ffffff; border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); border: 1px solid #e0e0e0;
+            max-width: 960px; width: 100%; margin: 0 auto;
+            display: flex; flex-direction: column; flex-grow: 1;
+            min-height: 0; overflow: hidden; position: relative;
+        }
+
+        /* Header */
+        #page-title {
+            font-size: 1.8rem; color: #f56565;
+            padding: 20px 24px 10px 24px; margin: 0; flex-shrink: 0;
+        }
+
+        /* Media */
+        .media-wrapper { width: 100%; flex-shrink: 0; background: #fafafa; border-bottom: 2px solid #f56565; text-align: center; }
+        #page-image { max-width: 100%; height: auto; max-height: 350px; object-fit: contain; display: block; margin: 0 auto; }
+        #video-container { position: relative; padding-top: 56.25%; background: #000; height: 0; }
+        #video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+
+        /* Scrollable Content */
+        .text-content-wrapper { flex-grow: 1; overflow-y: auto; padding: 20px 24px; }
+        .content-section { margin-bottom: 20px; }
+        .content-section h2 { font-size: 1.2rem; color: #f56565; border-bottom: 2px solid #f0f0f0; margin-bottom: 10px; }
+        .exercise-sets { font-size: 1.5rem; color: #f56565; font-weight: 700; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+
+        /* Menus & Lists */
+        .day-purpose { background: #fff5f5; border-left: 4px solid #f56565; padding: 12px; margin-bottom: 20px; color: #444; }
+        .day-exercise-list { list-style: none; padding: 0; margin: 0; }
+        .day-exercise-list li button {
+            width: 100%; text-align: left; background: #fff; border: 1px solid #eee;
+            padding: 15px; margin-bottom: 8px; border-radius: 8px; cursor: pointer;
+            font-size: 1rem; font-weight: 600; color: #2d3748;
+            display: flex; justify-content: space-between; align-items: center;
+            transition: all 0.2s;
+        }
+        .day-exercise-list li button:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .day-exercise-list li button span { font-weight: 400; color: #718096; font-size: 0.9rem; }
+
+        /* Navigation Buttons */
+        .pagination { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; max-width: 960px; width: 100%; margin-left: auto; margin-right: auto; }
+        .pagination button { background: #f56565; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+        .pagination button:disabled { background: #e2e8f0; color: #a0aec0; cursor: not-allowed; }
+        .pagination.hidden { display: none; }
+        
+        /* Side Menu */
+        .menu-btn { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.8rem; cursor: pointer; z-index: 100; color: #f56565; }
+        .side-menu { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; transition: opacity 0.3s; }
+        .side-menu.hidden { opacity: 0; pointer-events: none; }
+        .menu-content { position: absolute; top: 0; right: 0; width: 300px; height: 100%; background: white; padding: 20px; transform: translateX(0); transition: transform 0.3s; overflow-y: auto; }
+        .side-menu.hidden .menu-content { transform: translateX(100%); }
+        .close-btn { position: absolute; top: 10px; right: 15px; font-size: 2rem; background: none; border: none; cursor: pointer; color: #718096; }
+        #menu-links { list-style: none; padding: 0; margin-top: 40px; }
+        #menu-links li button { width: 100%; padding: 12px 0; text-align: left; border: none; background: none; border-bottom: 1px solid #eee; font-size: 1.1rem; color: #2d3748; cursor: pointer; }
+
+        /* --- 2. AI LAUNCHER BUTTON (In App) --- */
+        .ai-launcher {
+            padding: 15px; background: #fff; border-top: 1px solid #eee;
+            display: flex; justify-content: center;
+        }
+        .ai-launcher.hidden { display: none; }
+        
+        .btn-launch-ai {
+            background: #1a202c; color: white; border: none;
+            padding: 12px 30px; border-radius: 30px; font-size: 1rem; font-weight: 600;
+            cursor: pointer; display: flex; align-items: center; gap: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.2s;
+        }
+        .btn-launch-ai:hover { transform: translateY(-2px); background: #000; }
+
+        /* --- 3. AI OVERLAY (Dark Dashboard) --- */
+        #ai-overlay {
+            position: fixed; inset: 0; background: #09090b; color: #fff;
+            z-index: 3000; display: flex; flex-direction: column;
+        }
+        #ai-overlay.hidden { display: none; }
+
+        .ai-grid { display: grid; grid-template-columns: 1fr 380px; height: 100%; }
+
+        /* Stage (Left) */
+        .ai-stage { position: relative; background: #000; display: flex; align-items: center; justify-content: center; overflow: hidden; border-right: 1px solid #333; }
+        #ai-video { transform: scaleX(-1); }
+        #ai-video, #ai-canvas { position: absolute; width: 100%; height: 100%; object-fit: cover; }
+        
+        /* Start Screen */
+        #ai-start-screen {
+            position: absolute; inset: 0; background: rgba(9, 9, 11, 0.9);
+            display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 50;
+        }
+        #ai-btn-start {
+            background: #ff6b2b; color: white; border: none; padding: 16px 40px;
+            border-radius: 50px; font-size: 1.2rem; font-weight: 700; cursor: pointer;
+            box-shadow: 0 0 20px rgba(255, 107, 43, 0.4); margin-bottom: 20px;
+        }
+        #ai-btn-exit-overlay {
+            background: transparent; color: #aaa; border: 1px solid #444;
+            padding: 10px 30px; border-radius: 30px; cursor: pointer;
+        }
+
+        /* Dashboard (Right) */
+        .ai-dashboard { padding: 24px; background: #09090b; display: flex; flex-direction: column; gap: 20px; }
+        .ai-header { display: flex; justify-content: space-between; align-items: center; }
+        .ai-header h2 { margin: 0; font-size: 1.2rem; }
+        .btn-close-small { background: #27272a; color: white; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; }
+
+        /* Cards */
+        .ai-card { background: #141416; border: 1px solid #27272a; border-radius: 12px; padding: 20px; }
+        .ai-card.hero { 
+            background: linear-gradient(135deg, #ff6b2b, #ff8f50); border: none; color: white;
+            display: flex; align-items: center; gap: 20px; min-height: 140px;
+        }
+        .hero-icon { font-size: 2rem; background: rgba(255,255,255,0.2); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .hero-val { font-size: 4rem; font-weight: 700; line-height: 1; }
+        
+        /* Gauge */
+        .gauge-wrap { height: 8px; background: #27272a; border-radius: 4px; margin-top: 15px; position: relative; overflow: hidden; }
+        .gauge-bar { height: 100%; background: #ff6b2b; width: 0%; transition: width 0.1s; }
+        .gauge-mark { position: absolute; top:0; bottom:0; width: 2px; background: #555; }
+        
+        .metric-row { display: flex; justify-content: space-between; align-items: baseline; }
+        .metric-big { font-size: 1.5rem; font-weight: 700; }
+
+        /* Controls */
+        .ctrl-group { margin-bottom: 15px; }
+        .ctrl-group label { display: block; font-size: 0.8rem; color: #a1a1aa; margin-bottom: 5px; }
+        .ctrl-group input { width: 100%; background: #27272a; border: 1px solid #3f3f46; color: white; padding: 10px; border-radius: 8px; }
+        .btn-reset { width: 100%; background: #27272a; border: 1px solid #3f3f46; color: white; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 600; }
+        .btn-reset:hover { background: #3f3f46; }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .ai-grid { grid-template-columns: 1fr; grid-template-rows: 1fr auto; }
+            .ai-dashboard { height: auto; border-top: 1px solid #333; }
+            .ai-card.hero { padding: 15px; min-height: 100px; }
+            .hero-val { font-size: 3rem; }
+        }
+    </style>
 </head>
 <body>
 
     <main class="exercise-card">
         <button id="menu-btn" class="menu-btn">&#9776;</button>
-
-        <h1 id="page-title">Welcome!</h1>
+        <h1 id="page-title">Welcome</h1>
         
         <div id="image-container" class="media-wrapper">
-            <img id="page-image" src="images/Cover Image.png" alt="Workout Cover Image">
+            <img id="page-image" src="" alt="">
         </div>
         <div id="video-container" class="media-wrapper" style="display: none;"></div>
-            
+
         <div id="text-content-wrapper" class="text-content-wrapper">
-            <p id="welcome-message">Please select a workout from the menu to begin.</p>
-        </div> 
+            <p id="welcome-message" style="text-align:center; margin-top:40px; color:#666;">
+                Loading workout data...
+            </p>
+        </div>
 
         <div id="ai-launch-container" class="ai-launcher hidden">
-            <button id="btn-launch-ai" class="btn-primary">
+            <button id="btn-launch-ai" class="btn-launch-ai">
                 <span>📷</span> Launch AI Rep Counter
             </button>
         </div>
-
     </main>
 
     <nav id="pagination" class="pagination hidden">
@@ -40,10 +189,11 @@
     <nav id="side-menu" class="side-menu hidden">
         <div class="menu-content">
             <button id="close-btn" class="close-btn">&times;</button>
-            <h2>Workout Plan</h2>
+            <h2 style="color:#f56565; border-bottom:1px solid #eee; padding-bottom:10px;">Workout Plan</h2>
             <ul id="menu-links"></ul>
         </div>
     </nav>
+
 
     <div id="ai-overlay" class="hidden">
         <div class="ai-grid">
@@ -51,53 +201,385 @@
                 <video id="ai-video" playsinline muted></video>
                 <canvas id="ai-canvas"></canvas>
                 <div id="ai-start-screen">
-                    <h2>Ready?</h2>
-                    <button id="ai-btn-start">START SESSION</button>
-                    <button id="ai-btn-close" class="secondary">EXIT</button>
+                    <h2 style="font-weight:300; letter-spacing:1px; margin-bottom:30px;">READY TO TRAIN?</h2>
+                    <button id="ai-btn-start">START CAMERA</button>
+                    <button id="ai-btn-exit-overlay">RETURN TO GUIDE</button>
                 </div>
             </div>
 
             <div class="ai-dashboard">
                 <div class="ai-header">
-                    <h1 id="ai-exercise-title">Bicep Curls</h1>
-                    <button id="ai-btn-exit-small">✕</button>
+                    <h2 id="ai-title-display">Exercise Tracker</h2>
+                    <button id="ai-btn-close-small" class="btn-close-small">✕</button>
                 </div>
 
                 <div class="ai-card hero">
                     <div class="hero-icon">💪</div>
                     <div>
-                        <div class="hero-label">Total Reps</div>
-                        <div id="hud-reps" class="hero-value">0</div>
+                        <div style="font-size:0.9rem; opacity:0.8;">Reps Completed</div>
+                        <div id="ai-reps" class="hero-val">0</div>
                     </div>
                 </div>
 
                 <div class="ai-card">
                     <div class="metric-row">
-                        <span>Form Quality</span>
-                        <span id="currentPct" class="metric-big">0%</span>
+                        <span style="color:#a1a1aa; font-size:0.9rem;">Extension / Form</span>
+                        <span id="ai-pct" class="metric-big">0%</span>
                     </div>
-                    <div class="gauge-container">
-                        <div class="gauge-bar" id="gauge-bar"></div>
-                        <div class="gauge-marker" style="left: 85%"></div>
-                        <div class="gauge-marker" style="left: 50%"></div>
+                    <div class="gauge-wrap">
+                        <div id="ai-gauge-bar" class="gauge-bar"></div>
+                        <div class="gauge-mark" style="left:50%"></div>
+                        <div class="gauge-mark" style="left:85%"></div>
                     </div>
                 </div>
 
                 <div class="ai-card">
-                    <div class="control-group">
+                    <div class="ctrl-group">
                         <label>Target Reps</label>
-                        <input id="targetReps" type="number" value="12">
+                        <input id="ai-target-input" type="number" value="12">
                     </div>
-                    <div class="btn-row">
-                        <button id="ai-btn-reset">Reset</button>
-                    </div>
+                    <button id="ai-btn-reset" class="btn-reset">Reset Counter</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <script type="module" src="ai-tracker.js"></script>
-    <script src="app.js"></script>
+
+    <script type="module">
+        import {FilesetResolver, PoseLandmarker, DrawingUtils} from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.10";
+
+        // --- 1. APP STATE & ELEMENTS ---
+        let allData = {};
+        let currentDayExercises = [];
+        let currentExerciseIndex = 0;
+        
+        // App DOM
+        const titleEl = document.getElementById('page-title');
+        const contentWrapperEl = document.getElementById('text-content-wrapper');
+        const imgContainer = document.getElementById('image-container');
+        const pageImage = document.getElementById('page-image');
+        const vidContainer = document.getElementById('video-container');
+        const paginationEl = document.getElementById('pagination');
+        const btnPrev = document.getElementById('prev-btn');
+        const btnNext = document.getElementById('next-btn');
+        const counterEl = document.getElementById('page-counter');
+        const menuBtn = document.getElementById('menu-btn');
+        const sideMenu = document.getElementById('side-menu');
+        const menuLinks = document.getElementById('menu-links');
+        
+        // AI DOM
+        const aiLauncher = document.getElementById('ai-launch-container');
+        const btnLaunchAi = document.getElementById('btn-launch-ai');
+        const aiOverlay = document.getElementById('ai-overlay');
+        const aiStartScreen = document.getElementById('ai-start-screen');
+        const aiBtnStart = document.getElementById('ai-btn-start');
+        const aiBtnExitOverlay = document.getElementById('ai-btn-exit-overlay');
+        const aiBtnCloseSmall = document.getElementById('ai-btn-close-small');
+        const aiVideo = document.getElementById('ai-video');
+        const aiCanvas = document.getElementById('ai-canvas');
+        const aiCtx = aiCanvas.getContext('2d');
+        const elAiReps = document.getElementById('ai-reps');
+        const elAiPct = document.getElementById('ai-pct');
+        const elAiGauge = document.getElementById('ai-gauge-bar');
+        const aiBtnReset = document.getElementById('ai-btn-reset');
+        const aiTargetInput = document.getElementById('ai-target-input');
+
+        // --- 2. AI TRACKER CLASS ---
+        class Tracker {
+            constructor() {
+                this.active = false;
+                this.landmarker = null;
+                this.reps = 0;
+                this.passedBottom = false;
+                this.smoothed = 0;
+                this.targetReps = 12;
+                
+                // Config
+                this.thHigh = 85;
+                this.thLow = 50;
+                this.minAngle = 50;
+                this.maxAngle = 170;
+            }
+
+            async initModel() {
+                if (this.landmarker) return;
+                const fs = await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.10/wasm");
+                this.landmarker = await PoseLandmarker.createFromOptions(fs, {
+                    baseOptions: { modelAssetPath: "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_full/float16/1/pose_landmarker_full.task" },
+                    runningMode: "VIDEO", numPoses: 1
+                });
+                console.log("AI Model Ready");
+            }
+
+            async start(target) {
+                this.targetReps = target || 12;
+                aiTargetInput.value = this.targetReps;
+                this.reset();
+                await this.initModel();
+
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({video: {facingMode: "user"}, audio: false});
+                    aiVideo.srcObject = stream;
+                    await aiVideo.play();
+                    this.active = true;
+                    this.resize();
+                    this.loop();
+                } catch (e) {
+                    alert("Camera Error: " + e);
+                }
+            }
+
+            stop() {
+                this.active = false;
+                if(aiVideo.srcObject) {
+                    aiVideo.srcObject.getTracks().forEach(t => t.stop());
+                    aiVideo.srcObject = null;
+                }
+            }
+
+            reset() {
+                this.reps = 0;
+                this.passedBottom = false;
+                this.updateUI();
+            }
+
+            resize() {
+                aiCanvas.width = aiVideo.videoWidth;
+                aiCanvas.height = aiVideo.videoHeight;
+            }
+
+            updateUI() {
+                elAiReps.textContent = this.reps;
+                elAiPct.textContent = Math.round(this.smoothed) + "%";
+                elAiGauge.style.width = this.smoothed + "%";
+                
+                // Color Logic
+                if(this.smoothed >= this.thHigh) elAiGauge.style.backgroundColor = "#4ade80"; // Green
+                else if(this.smoothed <= this.thLow) elAiGauge.style.backgroundColor = "#ff6b2b"; // Orange
+                else elAiGauge.style.backgroundColor = "#fff";
+            }
+
+            calculate(lms) {
+                // Right Arm: 12 (Shoulder), 14 (Elbow), 16 (Wrist)
+                const s = lms[12], e = lms[14], w = lms[16];
+                
+                // Angle Math
+                const v1 = {x:s.x-e.x, y:s.y-e.y}, v2 = {x:w.x-e.x, y:w.y-e.y};
+                const dot = v1.x*v2.x + v1.y*v2.y;
+                const mag = Math.hypot(v1.x,v1.y) * Math.hypot(v2.x,v2.y);
+                const ang = Math.acos(dot/mag) * 180 / Math.PI;
+                
+                // Map to Percentage
+                const pct = Math.max(0, Math.min(1, (ang - this.minAngle)/(this.maxAngle - this.minAngle))) * 100;
+                this.smoothed = this.smoothed * 0.8 + pct * 0.2;
+
+                // Rep Logic
+                if (this.smoothed <= this.thLow) this.passedBottom = true;
+                if (this.passedBottom && this.smoothed >= this.thHigh) {
+                    this.reps++;
+                    this.passedBottom = false;
+                    // Optional: beep()
+                }
+
+                // Draw
+                aiCtx.clearRect(0,0, aiCanvas.width, aiCanvas.height);
+                aiCtx.save();
+                aiCtx.scale(-1, 1);
+                aiCtx.translate(-aiCanvas.width, 0);
+                
+                const draw = new DrawingUtils(aiCtx);
+                draw.drawConnectors(lms, PoseLandmarker.POSE_CONNECTIONS, {color:"rgba(255,255,255,0.1)", lineWidth:1});
+                
+                aiCtx.lineWidth = 5;
+                aiCtx.strokeStyle = "#ff6b2b";
+                aiCtx.beginPath();
+                aiCtx.moveTo(s.x*aiCanvas.width, s.y*aiCanvas.height);
+                aiCtx.lineTo(e.x*aiCanvas.width, e.y*aiCanvas.height);
+                aiCtx.lineTo(w.x*aiCanvas.width, w.y*aiCanvas.height);
+                aiCtx.stroke();
+                
+                aiCtx.restore();
+                this.updateUI();
+            }
+
+            async loop() {
+                if(!this.active) return;
+                if(this.landmarker) {
+                    const res = this.landmarker.detectForVideo(aiVideo, performance.now());
+                    if(res.landmarks.length > 0) {
+                        this.calculate(res.landmarks[0]);
+                    } else {
+                        aiCtx.clearRect(0,0, aiCanvas.width, aiCanvas.height);
+                    }
+                }
+                window.requestAnimationFrame(()=>this.loop());
+            }
+        }
+        const tracker = new Tracker();
+
+
+        // --- 3. MAIN APP LOGIC ---
+        async function initApp() {
+            try {
+                const res = await fetch('data.json');
+                if(!res.ok) throw new Error("Could not load data.json");
+                allData = await res.json();
+                populateMenu();
+                // Default view (Day 1)
+                displayDay(allData.workoutPlan[0]);
+            } catch (err) {
+                titleEl.textContent = "Error";
+                contentWrapperEl.innerHTML = `<p style="color:red; text-align:center;">${err.message}</p>`;
+            }
+        }
+
+        function populateMenu() {
+            menuLinks.innerHTML = '';
+            allData.workoutPlan.forEach(day => {
+                const li = document.createElement('li');
+                const btn = document.createElement('button');
+                btn.textContent = day.dayTitle;
+                btn.onclick = () => {
+                    displayDay(day);
+                    toggleMenu(false);
+                };
+                li.appendChild(btn);
+                menuLinks.appendChild(li);
+            });
+        }
+
+        function toggleMenu(show) {
+            if(show) sideMenu.classList.remove('hidden');
+            else sideMenu.classList.add('hidden');
+        }
+
+        function displayDay(day) {
+            titleEl.textContent = day.dayTitle;
+            imgContainer.style.display = 'none';
+            vidContainer.style.display = 'none';
+            vidContainer.innerHTML = '';
+            paginationEl.classList.add('hidden');
+            aiLauncher.classList.add('hidden'); // Hide AI button on list view
+
+            contentWrapperEl.innerHTML = '';
+            
+            const p = document.createElement('p');
+            p.className = 'day-purpose';
+            p.textContent = day.purpose;
+            contentWrapperEl.appendChild(p);
+
+            const ul = document.createElement('ul');
+            ul.className = 'day-exercise-list';
+            
+            currentDayExercises = day.exercises;
+            
+            day.exercises.forEach((ex, idx) => {
+                const details = allData.exerciseLibrary[ex.id] || { title: "Unknown", setsAndReps: "N/A" };
+                const li = document.createElement('li');
+                const btn = document.createElement('button');
+                btn.innerHTML = `${details.title} <span>${ex.setsAndReps}</span>`;
+                btn.onclick = () => {
+                    currentExerciseIndex = idx;
+                    displayExercise(ex.id, ex.setsAndReps);
+                };
+                li.appendChild(btn);
+                ul.appendChild(li);
+            });
+            contentWrapperEl.appendChild(ul);
+        }
+
+        function displayExercise(id, setsReps) {
+            const ex = allData.exerciseLibrary[id];
+            if(!ex) return;
+
+            titleEl.textContent = ex.title;
+            paginationEl.classList.remove('hidden');
+            updateNav();
+
+            // Media Logic
+            if(ex.youtubeId) {
+                imgContainer.style.display = 'none';
+                vidContainer.style.display = 'block';
+                vidContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${ex.youtubeId}?autoplay=0&rel=0" allowfullscreen></iframe>`;
+            } else {
+                imgContainer.style.display = 'block';
+                vidContainer.style.display = 'none';
+                vidContainer.innerHTML = '';
+                pageImage.src = ex.imagePath || ''; 
+            }
+
+            // AI Check
+            if (ex.aiType) {
+                aiLauncher.classList.remove('hidden');
+                btnLaunchAi.onclick = () => openAiOverlay(ex.title, setsReps);
+            } else {
+                aiLauncher.classList.add('hidden');
+            }
+
+            // Text Content
+            contentWrapperEl.innerHTML = `
+                <div class="exercise-sets">${setsReps}</div>
+                ${ex.overview ? `<div class="content-section"><h2>Overview</h2><p>${ex.overview}</p></div>` : ''}
+                ${ex.howTo ? `<div class="content-section"><h2>How To</h2><ul>${ex.howTo.map(i=>`<li>${i}</li>`).join('')}</ul></div>` : ''}
+                ${ex.trainersTip ? `<div class="content-section"><h2>Trainer's Tip</h2><p style="background:#fffaf0; padding:10px; border-left:4px solid #f56565;">${ex.trainersTip}</p></div>` : ''}
+            `;
+        }
+
+        function updateNav() {
+            btnPrev.disabled = currentExerciseIndex === 0;
+            btnNext.disabled = currentExerciseIndex === currentDayExercises.length - 1;
+            counterEl.textContent = `${currentExerciseIndex + 1} / ${currentDayExercises.length}`;
+        }
+
+        // --- 4. NAVIGATION HANDLERS ---
+        btnPrev.onclick = () => {
+            if(currentExerciseIndex > 0) {
+                currentExerciseIndex--;
+                const ex = currentDayExercises[currentExerciseIndex];
+                displayExercise(ex.id, ex.setsAndReps);
+            }
+        };
+        btnNext.onclick = () => {
+            if(currentExerciseIndex < currentDayExercises.length - 1) {
+                currentExerciseIndex++;
+                const ex = currentDayExercises[currentExerciseIndex];
+                displayExercise(ex.id, ex.setsAndReps);
+            }
+        };
+        
+        menuBtn.onclick = () => toggleMenu(true);
+        document.getElementById('close-btn').onclick = () => toggleMenu(false);
+        sideMenu.onclick = (e) => { if(e.target === sideMenu) toggleMenu(false); };
+
+        // --- 5. AI OVERLAY HANDLERS ---
+        function openAiOverlay(title, setsReps) {
+            aiOverlay.classList.remove('hidden');
+            aiStartScreen.style.display = 'flex';
+            document.getElementById('ai-title-display').textContent = title;
+            
+            // Extract reps
+            let r = 12;
+            const match = setsReps.match(/x(\d+)/); // simple parse "3x10" -> 10
+            if(match) r = parseInt(match[1]);
+            tracker.targetReps = r;
+            aiTargetInput.value = r;
+        }
+
+        function closeAiOverlay() {
+            tracker.stop();
+            aiOverlay.classList.add('hidden');
+        }
+
+        aiBtnStart.onclick = () => {
+            aiStartScreen.style.display = 'none';
+            tracker.start(parseInt(aiTargetInput.value));
+        };
+        aiBtnExitOverlay.onclick = closeAiOverlay;
+        aiBtnCloseSmall.onclick = closeAiOverlay;
+        aiBtnReset.onclick = () => tracker.reset();
+        
+        // --- BOOT ---
+        initApp();
+    </script>
 </body>
 </html>
-
