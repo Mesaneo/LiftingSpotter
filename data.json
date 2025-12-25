@@ -297,6 +297,7 @@
   "exerciseLibrary": {
     "dumbbell-bicep-curls": {
       "title": "Dumbbell Bicep Curls",
+      "aiType": "curl",
       "imagePath": "/images/Dumbbell Bicep Curls.png",
       "overview": "Dumbbell Bicep Curls are fundamental in building upper arm strength and aesthetics, primarily targeting the biceps brachii.",
       "relatedLink": "Discover more about effective bicep exercises in this ACE study.",
@@ -1378,4 +1379,5 @@
       "trainersTip": "Watch carefully."
     }
   }
+
 }
