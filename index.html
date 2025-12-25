@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-R"">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exercise Guide</title>
+    <title>Exercise Guide & Tracker</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -13,15 +14,20 @@
 
         <h1 id="page-title">Welcome!</h1>
         
-		<div id="image-container" class="media-wrapper">
+        <div id="image-container" class="media-wrapper">
             <img id="page-image" src="/images/Cover Image.png" alt="Workout Cover Image">
         </div>
-        <div id="video-container" class="media-wrapper" style="display: none;">
-            </div>
-			
+        <div id="video-container" class="media-wrapper" style="display: none;"></div>
+            
         <div id="text-content-wrapper" class="text-content-wrapper">
             <p id="welcome-message">Please select a workout from the menu to begin.</p>
         </div> 
+
+        <div id="ai-launch-container" class="ai-launcher hidden">
+            <button id="btn-launch-ai" class="btn-primary">
+                <span>📷</span> Launch AI Rep Counter
+            </button>
+        </div>
 
     </main>
 
@@ -35,11 +41,62 @@
         <div class="menu-content">
             <button id="close-btn" class="close-btn">&times;</button>
             <h2>Workout Plan</h2>
-            <ul id="menu-links">
-                </ul>
+            <ul id="menu-links"></ul>
         </div>
     </nav>
 
+    <div id="ai-overlay" class="hidden">
+        <div class="ai-grid">
+            <div class="ai-stage">
+                <video id="ai-video" playsinline muted></video>
+                <canvas id="ai-canvas"></canvas>
+                <div id="ai-start-screen">
+                    <h2>Ready?</h2>
+                    <button id="ai-btn-start">START SESSION</button>
+                    <button id="ai-btn-close" class="secondary">EXIT</button>
+                </div>
+            </div>
+
+            <div class="ai-dashboard">
+                <div class="ai-header">
+                    <h1 id="ai-exercise-title">Bicep Curls</h1>
+                    <button id="ai-btn-exit-small">✕</button>
+                </div>
+
+                <div class="ai-card hero">
+                    <div class="hero-icon">💪</div>
+                    <div>
+                        <div class="hero-label">Total Reps</div>
+                        <div id="hud-reps" class="hero-value">0</div>
+                    </div>
+                </div>
+
+                <div class="ai-card">
+                    <div class="metric-row">
+                        <span>Form Quality</span>
+                        <span id="currentPct" class="metric-big">0%</span>
+                    </div>
+                    <div class="gauge-container">
+                        <div class="gauge-bar" id="gauge-bar"></div>
+                        <div class="gauge-marker" style="left: 85%"></div>
+                        <div class="gauge-marker" style="left: 50%"></div>
+                    </div>
+                </div>
+
+                <div class="ai-card">
+                    <div class="control-group">
+                        <label>Target Reps</label>
+                        <input id="targetReps" type="number" value="12">
+                    </div>
+                    <div class="btn-row">
+                        <button id="ai-btn-reset">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="ai-tracker.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
