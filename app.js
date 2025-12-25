@@ -1,3 +1,86 @@
+// At the top of app.js
+import { aiTracker } from './ai-tracker.js';
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    // ... [KEEP YOUR EXISTING VARIABLES] ...
+    
+    // --- NEW VARIABLES ---
+    const aiLaunchContainer = document.getElementById('ai-launch-container');
+    const btnLaunchAi = document.getElementById('btn-launch-ai');
+    
+    // Overlay Elements
+    const aiOverlay = document.getElementById('ai-overlay');
+    const aiBtnStart = document.getElementById('ai-btn-start');
+    const aiBtnClose = document.getElementById('ai-btn-close');
+    const aiBtnExitSmall = document.getElementById('ai-btn-exit-small');
+    const aiExerciseTitle = document.getElementById('ai-exercise-title');
+    const aiStartScreen = document.getElementById('ai-start-screen');
+
+    // ... [KEEP YOUR EXISTING INIT FUNCTION] ...
+
+    /**
+     * Attaches all primary event listeners.
+     */
+    function addEventListeners() {
+        // ... [KEEP EXISTING LISTENERS] ...
+        
+        // --- NEW AI LISTENERS ---
+        btnLaunchAi.addEventListener('click', openAiTracker);
+        
+        // Overlay Controls
+        aiBtnStart.addEventListener('click', () => {
+            aiStartScreen.style.display = 'none';
+            // Extract Reps from the text (e.g. "3x12") -> 12
+            const repString = document.querySelector('.exercise-sets').textContent;
+            let target = 12;
+            const match = repString.match(/x(\d+)/); // looks for "x12"
+            if(match) target = parseInt(match[1]);
+            
+            aiTracker.start(target);
+        });
+        
+        const closeAi = () => {
+            aiTracker.stop();
+            aiOverlay.classList.add('hidden');
+            // Show start screen again for next time
+            aiStartScreen.style.display = 'flex'; 
+        };
+        
+        aiBtnClose.addEventListener('click', closeAi);
+        aiBtnExitSmall.addEventListener('click', closeAi);
+    }
+
+    // ... [KEEP SIDE MENU FUNCTIONS] ...
+
+    /**
+     * Displays the detailed view for a single exercise.
+     */
+    function displayExerciseView(exerciseId, setsAndReps) {
+        const exercise = allData.exerciseLibrary[exerciseId];
+        
+        // ... [KEEP EXISTING DISPLAY LOGIC] ...
+        
+        // --- NEW: AI BUTTON LOGIC ---
+        // Check if data.json has "aiType" set for this exercise
+        if (exercise.aiType) {
+            aiLaunchContainer.classList.remove('hidden');
+            // Store current exercise data on the button for easy access
+            btnLaunchAi.dataset.title = exercise.title;
+        } else {
+            aiLaunchContainer.classList.add('hidden');
+        }
+
+        // ... [KEEP THE REST OF THE FUNCTION] ...
+    }
+    
+    function openAiTracker() {
+        aiOverlay.classList.remove('hidden');
+        aiExerciseTitle.textContent = btnLaunchAi.dataset.title || "Workout";
+        // We don't start the camera immediately; we wait for user to hit "Start Session" in overlay
+    }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- 1. STATE ---
@@ -331,5 +414,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- 6. INITIALIZE THE APP ---
     init();
+
 
 });
