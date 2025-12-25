@@ -90,8 +90,8 @@
     /* --- RIGHT COLUMN: VISION WRAPPER --- */
     .vision-wrapper {
         background: var(--bg-dark);
-        display: grid;
-        grid-template-rows: auto 1fr; /* Video takes natural height, Dashboard takes rest */
+        display: flex;
+        flex-direction: column; /* Stack Video on top of Stats */
         height: 100%;
         overflow-y: auto;
     }
@@ -101,24 +101,39 @@
         width: 100%;
         background: #000;
         position: relative;
-        /* Force full width, let height adapt */
-        aspect-ratio: 16/9; 
-        max-height: 60vh; 
+        /* Let height be determined by the video aspect ratio to avoid cropping/misalignment */
+        height: auto;
+        min-height: 300px; 
         border-bottom: 1px solid #333;
+        display: flex; 
+        justify-content: center;
+        align-items: center;
     }
     
-    video, canvas {
-        width: 100%;
-        height: 100%;
-        object-fit: cover; /* Ensures full width no matter what */
-        display: block;
+    /* Mirror effect for both video and canvas to align perfectly */
+    .mirrored {
+        transform: scaleX(-1);
     }
-    video { transform: scaleX(-1); } /* Mirror */
+
+    video {
+        width: 100%;
+        height: auto;
+        display: block;
+        max-height: 70vh; /* Don't let it take over the whole screen on tall monitors */
+    }
+
+    canvas {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        object-fit: contain;
+        pointer-events: none;
+    }
 
     /* Overlay on Video */
     .cam-overlay {
         position: absolute; inset: 0;
-        background: rgba(0,0,0,0.7);
+        background: rgba(0,0,0,0.8);
         display: flex; flex-direction: column;
         align-items: center; justify-content: center;
         z-index: 5;
@@ -140,12 +155,17 @@
         display: flex;
         flex-direction: column;
         gap: 15px;
+        flex-grow: 1; /* Fills remaining space */
     }
 
     .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
     .dash-header h2 { margin: 0; font-size: 1.1rem; color: #888; }
-    .status-badge { font-size: 0.8rem; padding: 4px 8px; border-radius: 4px; background: #222; color: #666; }
+    
+    /* Status Badges */
+    .status-group { display: flex; gap: 8px; }
+    .status-badge { font-size: 0.75rem; padding: 4px 8px; border-radius: 4px; background: #222; color: #666; display: flex; align-items: center; gap: 5px; }
     .status-badge.active { background: rgba(74, 222, 128, 0.2); color: #4ade80; }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 
     /* Cards */
     .d-card {
@@ -173,13 +193,15 @@
     .ctrl-row { display: flex; gap: 10px; align-items: center; margin-top: 5px; }
     input[type=number] {
         background: #222; border: 1px solid #333; color: white;
-        padding: 8px; border-radius: 6px; width: 80px;
+        padding: 8px; border-radius: 6px; width: 80px; font-size: 1rem;
     }
-    .btn-reset {
+    .btn-ctrl {
         flex: 1; background: #222; border: 1px solid #333; color: #ccc;
-        padding: 8px; border-radius: 6px; cursor: pointer;
+        padding: 10px; border-radius: 6px; cursor: pointer; font-weight: 600;
+        transition: background 0.2s;
     }
-    .btn-reset:hover { background: #333; color: white; }
+    .btn-ctrl:hover { background: #333; color: white; }
+    .btn-ctrl.paused { background: #f59e0b; color: #000; }
 
     /* --- MENU MODAL --- */
     .side-menu {
@@ -208,15 +230,9 @@
             height: auto; min-height: 100vh; overflow-y: auto;
         }
         
-        /* 1. Video on top */
-        .vision-wrapper { 
-            grid-row: 1; 
-            display: contents; /* Removes wrapper box so children flow in main grid */
-        }
-        .video-pane { grid-row: 1; height: auto; max-height: 50vh; }
-        .dashboard-pane { grid-row: 2; border-bottom: 1px solid #ddd; }
-
-        /* 2. Info on bottom */
+        .vision-wrapper { display: contents; }
+        .video-pane { grid-row: 1; border-bottom: none; }
+        .dashboard-pane { grid-row: 2; border-bottom: 1px solid #ddd; padding: 15px; }
         .info-pane { grid-row: 3; height: auto; overflow: visible; }
     }
 </style>
@@ -250,8 +266,8 @@
     <div class="vision-wrapper">
         
         <div class="video-pane">
-            <video id="ai-video" playsinline muted></video>
-            <canvas id="ai-canvas"></canvas>
+            <video id="ai-video" class="mirrored" playsinline muted></video>
+            <canvas id="ai-canvas" class="mirrored"></canvas>
             
             <div id="cam-overlay" class="cam-overlay">
                 <h2 id="overlay-msg" style="color:white; font-weight:300; margin-bottom:20px;">AI TRACKER READY</h2>
@@ -265,7 +281,10 @@
         <div class="dashboard-pane">
             <div class="dash-header">
                 <h2>Rep Analysis</h2>
-                <div id="ai-status" class="status-badge">Standby</div>
+                <div class="status-group">
+                    <div id="ai-status" class="status-badge"><span class="dot"></span> Standby</div>
+                    <div id="voice-status" class="status-badge"><span class="dot"></span> Voice Off</div>
+                </div>
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
@@ -291,13 +310,16 @@
             </div>
 
             <div class="d-card">
-                <label style="font-size:0.8rem; color:#888;">Settings</label>
+                <div style="margin-bottom:10px; font-size:0.8rem; color:#888; display:flex; justify-content:space-between;">
+                    <span>Settings</span>
+                    <span>Say "Spotter Start/Pause/Reset"</span>
+                </div>
                 <div class="ctrl-row">
                     <div style="display:flex; align-items:center; gap:5px;">
-                        <span style="font-size:0.8rem;">Target:</span>
-                        <input id="target-reps" type="number" value="12">
+                        <input id="target-reps" type="number" value="12" title="Target Reps">
                     </div>
-                    <button id="btn-reset" class="btn-reset">Reset Counter</button>
+                    <button id="btn-pause" class="btn-ctrl" disabled>Pause</button>
+                    <button id="btn-reset" class="btn-ctrl" disabled>Reset</button>
                 </div>
             </div>
         </div>
@@ -347,8 +369,10 @@
     const elPct = document.getElementById('hud-pct');
     const elGauge = document.getElementById('gauge-bar');
     const elStatus = document.getElementById('ai-status');
+    const elVoiceStatus = document.getElementById('voice-status');
     const inpTarget = document.getElementById('target-reps');
     const btnReset = document.getElementById('btn-reset');
+    const btnPause = document.getElementById('btn-pause');
 
     // --- 2. APP STATE ---
     let allData = {};
@@ -360,6 +384,7 @@
     class Tracker {
         constructor() {
             this.active = false;
+            this.paused = false;
             this.landmarker = null;
             this.reps = 0;
             this.target = 12;
@@ -385,16 +410,16 @@
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({video: {facingMode: "user"}, audio: false});
                 aiVideo.srcObject = stream;
-                await aiVideo.play();
-                
-                // Resize canvas to match video
-                aiCanvas.width = aiVideo.videoWidth;
-                aiCanvas.height = aiVideo.videoHeight;
-                
-                this.active = true;
-                elStatus.textContent = "Active";
-                elStatus.classList.add("active");
-                this.loop();
+                // Wait for metadata to load to set canvas size correctly
+                aiVideo.onloadeddata = () => {
+                    aiCanvas.width = aiVideo.videoWidth;
+                    aiCanvas.height = aiVideo.videoHeight;
+                    aiVideo.play();
+                    this.active = true;
+                    this.paused = false;
+                    this.updateStatusUI();
+                    this.loop();
+                };
             } catch(e) {
                 alert("Camera Access Denied: " + e);
             }
@@ -402,18 +427,50 @@
 
         stop() {
             this.active = false;
-            elStatus.textContent = "Standby";
-            elStatus.classList.remove("active");
+            this.paused = false;
+            this.updateStatusUI();
             if(aiVideo.srcObject) {
                 aiVideo.srcObject.getTracks().forEach(t => t.stop());
                 aiVideo.srcObject = null;
             }
         }
 
+        togglePause(forceState) {
+            if (!this.active) return;
+            this.paused = forceState !== undefined ? forceState : !this.paused;
+            this.updateStatusUI();
+        }
+
         reset() {
             this.reps = 0;
             this.passedBottom = false;
             this.updateUI();
+        }
+
+        updateStatusUI() {
+            // Camera Status
+            if (!this.active) {
+                elStatus.textContent = "Standby";
+                elStatus.classList.remove("active");
+                btnPause.disabled = true;
+                btnReset.disabled = true;
+                btnPause.textContent = "Pause";
+                btnPause.classList.remove("paused");
+            } else {
+                btnPause.disabled = false;
+                btnReset.disabled = false;
+                if (this.paused) {
+                    elStatus.textContent = "Paused";
+                    elStatus.classList.remove("active");
+                    btnPause.textContent = "Resume";
+                    btnPause.classList.add("paused");
+                } else {
+                    elStatus.textContent = "Active";
+                    elStatus.classList.add("active");
+                    btnPause.textContent = "Pause";
+                    btnPause.classList.remove("paused");
+                }
+            }
         }
 
         updateUI() {
@@ -427,8 +484,13 @@
         }
 
         processLandmarks(lms) {
+            if (this.paused) {
+                // Draw static skeleton but don't count
+                this.drawSkeleton(lms);
+                return;
+            }
+
             // Logic for Bicep Curl (Right Arm: 12-14-16)
-            // You can expand this based on 'currentAiType'
             const s = lms[12], e = lms[14], w = lms[16];
 
             // Angle Calculation
@@ -448,16 +510,20 @@
                 this.passedBottom = false;
             }
 
-            // Draw
+            this.updateUI();
+            this.drawSkeleton(lms);
+        }
+
+        drawSkeleton(lms) {
             aiCtx.clearRect(0,0, aiCanvas.width, aiCanvas.height);
-            aiCtx.save();
-            aiCtx.scale(-1, 1);
-            aiCtx.translate(-aiCanvas.width, 0);
+            // Note: Canvas is CSS-mirrored, so we draw normal coordinates
             
             const draw = new DrawingUtils(aiCtx);
             draw.drawConnectors(lms, PoseLandmarker.POSE_CONNECTIONS, {color: "rgba(255,255,255,0.1)", lineWidth: 1});
+            draw.drawLandmarks(lms, {color: "rgba(255,255,255,0.5)", lineWidth: 1, radius: 2});
             
             // Highlight Working Arm
+            const s = lms[12], e = lms[14], w = lms[16];
             aiCtx.lineWidth = 5;
             aiCtx.strokeStyle = "#ff6b2b";
             aiCtx.beginPath();
@@ -465,9 +531,6 @@
             aiCtx.lineTo(e.x*aiCanvas.width, e.y*aiCanvas.height);
             aiCtx.lineTo(w.x*aiCanvas.width, w.y*aiCanvas.height);
             aiCtx.stroke();
-
-            aiCtx.restore();
-            this.updateUI();
         }
 
         async loop() {
@@ -485,7 +548,48 @@
     }
     const tracker = new Tracker();
 
-    // --- 4. DATA LOADING & UI LOGIC ---
+    // --- 4. VOICE CONTROL ---
+    function initVoiceCommands() {
+        if(!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)){
+            elVoiceStatus.textContent = "Voice N/A";
+            return;
+        }
+        const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recog = new SR();
+        recog.continuous = true;
+        recog.lang = "en-US";
+        recog.interimResults = false;
+        recog.maxAlternatives = 1;
+
+        recog.onstart = () => {
+            elVoiceStatus.classList.add("active");
+            elVoiceStatus.innerHTML = "<span class='dot'></span> Listening";
+        };
+
+        recog.onresult = (e) => {
+            const cmd = e.results[e.results.length-1][0].transcript.trim().toLowerCase();
+            console.log("Voice:", cmd);
+            
+            if(cmd.includes("spotter")) {
+                if(cmd.includes("start") || cmd.includes("resume") || cmd.includes("begin")) {
+                    if(!tracker.active) btnStartCam.click(); // Start if off
+                    else tracker.togglePause(false); // Unpause
+                }
+                if(cmd.includes("pause") || cmd.includes("stop") || cmd.includes("wait")) {
+                    tracker.togglePause(true);
+                }
+                if(cmd.includes("reset") || cmd.includes("clear")) {
+                    tracker.reset();
+                }
+            }
+        };
+
+        recog.onerror = () => { setTimeout(()=>recog.start(), 2000); };
+        recog.onend = () => { setTimeout(()=>recog.start(), 1500); };
+        recog.start();
+    }
+
+    // --- 5. DATA LOADING & UI LOGIC ---
     
     async function initApp() {
         try {
@@ -494,6 +598,7 @@
             allData = await res.json();
             
             populateMenu();
+            initVoiceCommands();
 
             // Load Cover Image initially
             titleEl.textContent = "Welcome";
@@ -613,7 +718,7 @@
     // --- VISION PANE CONTROLLERS ---
 
     function enableVisionPane(title, setsReps) {
-        // Prepare overlay
+        tracker.stop(); // Reset state
         camOverlay.style.display = "flex";
         btnStartCam.style.display = "block";
         btnStartCam.textContent = "START CAMERA";
@@ -668,6 +773,7 @@
         tracker.startCamera();
     };
     btnReset.onclick = () => tracker.reset();
+    btnPause.onclick = () => tracker.togglePause();
     inpTarget.onchange = () => { tracker.target = parseInt(inpTarget.value); };
 
     // Init
