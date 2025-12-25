@@ -297,7 +297,10 @@
   "exerciseLibrary": {
     "dumbbell-bicep-curls": {
       "title": "Dumbbell Bicep Curls",
-      "aiType": "curl",
+      "aiType": "enabled", 
+      "aiBodyPart": "right_arm",
+      "aiTop": 15,    
+      "aiReset": 75,
       "imagePath": "/LiftingSpotter/images/Dumbbell Bicep Curls.png",
       "overview": "Dumbbell Bicep Curls are fundamental in building upper arm strength and aesthetics, primarily targeting the biceps brachii.",
       "relatedLink": "Discover more about effective bicep exercises in this ACE study.",
@@ -487,6 +490,10 @@
     },
     "dumbbell-shoulder-press": {
       "title": "Dumbbell Shoulder Press",
+      "aiType": "enabled",
+      "aiBodyPart": "right_arm",
+      "aiTop": 85,
+      "aiReset": 40,
       "imagePath": "/LiftingSpotter/images/Dumbbell Shoulder Press.png",
       "overview": "The Dumbbell Shoulder Press is a comprehensive exercise for building overall shoulder strength and size.",
       "relatedLink": null,
@@ -1381,4 +1388,5 @@
   }
 
 }
+
 
