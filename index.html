@@ -8,228 +8,81 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
-    /* --- GLOBAL RESET & THEME --- */
     :root {
-        --bg-light: #f4f4f4;
-        --bg-panel: #ffffff;
-        --text-dark: #333;
-        --accent: #f56565;
-        
-        --bg-dark: #09090b;
-        --bg-dark-panel: #141416;
-        --text-light: #fff;
-        --accent-orange: #ff6b2b;
+        --bg-light: #f4f4f4; --bg-panel: #ffffff; --text-dark: #333; --accent: #f56565;
+        --bg-dark: #09090b; --bg-dark-panel: #141416; --text-light: #fff; --accent-orange: #ff6b2b;
     }
-    
     * { box-sizing: border-box; }
     html, body { height: 100%; margin: 0; padding: 0; font-family: 'Inter', sans-serif; overflow: hidden; }
 
-    /* --- LAYOUT GRID --- */
-    .app-layout {
-        display: grid;
-        grid-template-columns: 450px 1fr; /* Fixed width Info, Fluid Vision */
-        grid-template-rows: 100%;
-        height: 100vh;
-        width: 100vw;
-    }
+    /* LAYOUT */
+    .app-layout { display: grid; grid-template-columns: 450px 1fr; grid-template-rows: 100%; height: 100vh; width: 100vw; }
 
-    /* --- LEFT PANE: INFO (The "Original App") --- */
-    .info-pane {
-        background: var(--bg-light);
-        border-right: 1px solid #ddd;
-        display: flex;
-        flex-direction: column;
-        overflow-y: auto;
-        position: relative;
-        z-index: 10;
-        box-shadow: 2px 0 10px rgba(0,0,0,0.05);
-    }
-
-    .info-header {
-        background: var(--bg-panel);
-        padding: 20px;
-        border-bottom: 2px solid var(--accent);
-        position: sticky; top: 0; z-index: 20;
-    }
+    /* LEFT PANE */
+    .info-pane { background: var(--bg-light); border-right: 1px solid #ddd; display: flex; flex-direction: column; overflow-y: auto; position: relative; z-index: 10; box-shadow: 2px 0 10px rgba(0,0,0,0.05); }
+    .info-header { background: var(--bg-panel); padding: 20px; border-bottom: 2px solid var(--accent); position: sticky; top: 0; z-index: 20; }
     .info-header h1 { margin: 0; color: var(--accent); font-size: 1.6rem; }
-    
-    .menu-btn { 
-        position: absolute; top: 20px; right: 20px; 
-        background: none; border: none; font-size: 1.5rem; color: var(--accent); cursor: pointer; 
-    }
-
-    .reference-media {
-        background: #fff;
-        padding: 10px;
-        border-bottom: 1px solid #eee;
-        text-align: center;
-    }
-    .reference-media img {
-        max-width: 100%;
-        height: auto;
-        max-height: 250px;
-        object-fit: contain;
-        border-radius: 4px;
-    }
-
+    .menu-btn { position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 1.5rem; color: var(--accent); cursor: pointer; }
+    .reference-media { background: #fff; padding: 10px; border-bottom: 1px solid #eee; text-align: center; }
+    .reference-media img { max-width: 100%; height: auto; max-height: 250px; object-fit: contain; border-radius: 4px; }
     .info-content { padding: 20px; flex-grow: 1; }
     .content-section { margin-bottom: 25px; }
     .content-section h2 { font-size: 1.1rem; color: var(--accent); border-bottom: 1px solid #eee; padding-bottom: 5px; margin-bottom: 10px; }
     .content-section p, .content-section li { line-height: 1.6; color: #444; font-size: 0.95rem; margin-bottom: 8px; }
     .exercise-sets { font-size: 1.2rem; font-weight: 700; color: var(--accent); margin-bottom: 15px; }
-
-    .pagination {
-        padding: 15px;
-        background: var(--bg-panel);
-        border-top: 1px solid #eee;
-        display: flex; justify-content: space-between; align-items: center;
-    }
+    .pagination { padding: 15px; background: var(--bg-panel); border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
     .btn-nav { background: var(--accent); color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; }
     .btn-nav:disabled { background: #ddd; cursor: not-allowed; }
 
-    /* --- RIGHT COLUMN: VISION WRAPPER --- */
-    .vision-wrapper {
-        background: var(--bg-dark);
-        display: flex;
-        flex-direction: column; /* Stack Video on top of Stats */
-        height: 100%;
-        overflow-y: auto;
-    }
+    /* RIGHT COLUMN */
+    .vision-wrapper { background: var(--bg-dark); display: flex; flex-direction: column; height: 100%; overflow-y: auto; }
 
-    /* --- TOP RIGHT: VIDEO PANE --- */
-    .video-pane {
-        width: 100%;
-        background: #000;
-        position: relative;
-        /* Let height be determined by the video aspect ratio to avoid cropping/misalignment */
-        height: auto;
-        min-height: 300px; 
-        border-bottom: 1px solid #333;
-        display: flex; 
-        justify-content: center;
-        align-items: center;
-    }
-    
-    /* Mirror effect for both video and canvas to align perfectly */
-    .mirrored {
-        transform: scaleX(-1);
-    }
-
-    video {
-        width: 100%;
-        height: auto;
-        display: block;
-        max-height: 70vh; /* Don't let it take over the whole screen on tall monitors */
-    }
-
-    canvas {
-        position: absolute;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        object-fit: contain;
-        pointer-events: none;
-    }
-
-    /* Overlay on Video */
-    .cam-overlay {
-        position: absolute; inset: 0;
-        background: rgba(0,0,0,0.8);
-        display: flex; flex-direction: column;
-        align-items: center; justify-content: center;
-        z-index: 5;
-    }
-    .btn-start-cam {
-        background: var(--accent-orange); color: white;
-        border: none; padding: 12px 30px; border-radius: 30px;
-        font-size: 1rem; font-weight: 700; cursor: pointer;
-        box-shadow: 0 0 15px rgba(255, 107, 43, 0.4);
-        transition: transform 0.2s;
-    }
+    /* VIDEO PANE */
+    .video-pane { width: 100%; background: #000; position: relative; height: auto; min-height: 300px; border-bottom: 1px solid #333; display: flex; justify-content: center; align-items: center; }
+    .mirrored { transform: scaleX(-1); }
+    video { width: 100%; height: auto; display: block; max-height: 70vh; }
+    canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+    .cam-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 5; }
+    .btn-start-cam { background: var(--accent-orange); color: white; border: none; padding: 12px 30px; border-radius: 30px; font-size: 1rem; font-weight: 700; cursor: pointer; box-shadow: 0 0 15px rgba(255, 107, 43, 0.4); transition: transform 0.2s; }
     .btn-start-cam:hover { transform: scale(1.05); }
 
-    /* --- BOTTOM RIGHT: CONFIG DASHBOARD --- */
-    .dashboard-pane {
-        padding: 20px;
-        background: var(--bg-dark);
-        color: var(--text-light);
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-        flex-grow: 1; /* Fills remaining space */
-    }
-
+    /* DASHBOARD */
+    .dashboard-pane { padding: 20px; background: var(--bg-dark); color: var(--text-light); display: flex; flex-direction: column; gap: 15px; flex-grow: 1; }
     .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-    .dash-header h2 { margin: 0; font-size: 1.1rem; color: #888; }
-    
-    /* Status Badges */
     .status-group { display: flex; gap: 8px; }
     .status-badge { font-size: 0.75rem; padding: 4px 8px; border-radius: 4px; background: #222; color: #666; display: flex; align-items: center; gap: 5px; }
     .status-badge.active { background: rgba(74, 222, 128, 0.2); color: #4ade80; }
     .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 
-    /* Cards */
-    .d-card {
-        background: var(--bg-dark-panel);
-        border: 1px solid #27272a;
-        border-radius: 10px;
-        padding: 15px;
-    }
-
-    /* Hero Card (Reps) */
-    .d-card.hero {
-        background: linear-gradient(135deg, var(--accent-orange), #ff8f50);
-        border: none; color: white;
-        display: flex; align-items: center; justify-content: space-between;
-    }
+    .d-card { background: var(--bg-dark-panel); border: 1px solid #27272a; border-radius: 10px; padding: 15px; }
+    .d-card.hero { background: linear-gradient(135deg, var(--accent-orange), #ff8f50); border: none; color: white; display: flex; align-items: center; justify-content: space-between; }
     .rep-count { font-size: 3rem; font-weight: 700; line-height: 1; }
     .rep-label { font-size: 0.9rem; opacity: 0.9; }
 
-    /* Gauge */
     .gauge-container { height: 8px; background: #222; border-radius: 4px; position: relative; overflow: hidden; margin-top: 10px; }
     .gauge-fill { height: 100%; background: var(--accent-orange); width: 0%; transition: width 0.1s; }
-    .gauge-mark { position: absolute; top:0; bottom:0; width: 2px; background: #555; }
+    .gauge-mark { position: absolute; top:0; bottom:0; width: 2px; background: #555; z-index: 2; }
 
-    /* Controls */
     .ctrl-row { display: flex; gap: 10px; align-items: center; margin-top: 5px; }
-    input[type=number] {
-        background: #222; border: 1px solid #333; color: white;
-        padding: 8px; border-radius: 6px; width: 80px; font-size: 1rem;
-    }
-    .btn-ctrl {
-        flex: 1; background: #222; border: 1px solid #333; color: #ccc;
-        padding: 10px; border-radius: 6px; cursor: pointer; font-weight: 600;
-        transition: background 0.2s;
-    }
+    .setting-group { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+    .setting-group label { font-size: 0.7rem; color: #888; }
+    input[type=number] { background: #222; border: 1px solid #333; color: white; padding: 8px; border-radius: 6px; width: 100%; font-size: 0.9rem; }
+    
+    .btn-ctrl { flex: 1; background: #222; border: 1px solid #333; color: #ccc; padding: 10px; border-radius: 6px; cursor: pointer; font-weight: 600; transition: background 0.2s; }
     .btn-ctrl:hover { background: #333; color: white; }
     .btn-ctrl.paused { background: #f59e0b; color: #000; }
 
-    /* --- MENU MODAL --- */
-    .side-menu {
-        position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000;
-        opacity: 0; pointer-events: none; transition: opacity 0.3s;
-    }
+    /* MENU */
+    .side-menu { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
     .side-menu.open { opacity: 1; pointer-events: auto; }
-    .menu-content {
-        position: absolute; top: 0; left: 0; bottom: 0; width: 300px;
-        background: white; padding: 20px; overflow-y: auto;
-        transform: translateX(-100%); transition: transform 0.3s;
-    }
+    .menu-content { position: absolute; top: 0; left: 0; bottom: 0; width: 300px; background: white; padding: 20px; overflow-y: auto; transform: translateX(-100%); transition: transform 0.3s; }
     .side-menu.open .menu-content { transform: translateX(0); }
-    .menu-list button {
-        width: 100%; text-align: left; padding: 12px 10px;
-        background: none; border: none; border-bottom: 1px solid #eee;
-        cursor: pointer; color: #333; font-size: 1rem;
-    }
+    .menu-list button { width: 100%; text-align: left; padding: 12px 10px; background: none; border: none; border-bottom: 1px solid #eee; cursor: pointer; color: #333; font-size: 1rem; }
     .menu-list button:hover { background: #f9f9f9; color: var(--accent); }
 
-    /* --- RESPONSIVE --- */
+    /* RESPONSIVE */
     @media (max-width: 900px) {
-        .app-layout {
-            grid-template-columns: 1fr;
-            grid-template-rows: auto auto 1fr; /* Video -> Stats -> Info */
-            height: auto; min-height: 100vh; overflow-y: auto;
-        }
-        
+        .app-layout { grid-template-columns: 1fr; grid-template-rows: auto auto 1fr; height: auto; min-height: 100vh; overflow-y: auto; }
         .vision-wrapper { display: contents; }
         .video-pane { grid-row: 1; border-bottom: none; }
         .dashboard-pane { grid-row: 2; border-bottom: 1px solid #ddd; padding: 15px; }
@@ -240,22 +93,18 @@
 <body>
 
 <div class="app-layout">
-    
     <div class="info-pane">
         <header class="info-header">
             <h1 id="page-title">Welcome</h1>
             <button id="menu-btn" class="menu-btn">&#9776;</button>
         </header>
-
         <div class="reference-media" id="media-container">
             <img id="ref-image" src="" alt="Exercise Reference">
             <div id="video-embed-container" style="display:none; aspect-ratio:16/9; background:#000;"></div>
         </div>
-
         <div class="info-content" id="content-wrapper">
             <p style="text-align:center; color:#666; margin-top:20px;">Loading Workout...</p>
         </div>
-
         <nav class="pagination hidden" id="pagination">
             <button id="prev-btn" class="btn-nav">Previous</button>
             <span id="page-counter" style="color:#666; font-size:0.9rem;"></span>
@@ -264,11 +113,9 @@
     </div>
 
     <div class="vision-wrapper">
-        
         <div class="video-pane">
             <video id="ai-video" class="mirrored" playsinline muted></video>
             <canvas id="ai-canvas" class="mirrored"></canvas>
-            
             <div id="cam-overlay" class="cam-overlay">
                 <h2 id="overlay-msg" style="color:white; font-weight:300; margin-bottom:20px;">AI TRACKER READY</h2>
                 <button id="btn-start-cam" class="btn-start-cam">START CAMERA</button>
@@ -289,41 +136,43 @@
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                 <div class="d-card hero">
-                    <div>
-                        <div class="rep-label">Reps</div>
-                        <div id="hud-reps" class="rep-count">0</div>
-                    </div>
+                    <div><div class="rep-label">Reps</div><div id="hud-reps" class="rep-count">0</div></div>
                     <div style="font-size:2rem;">💪</div>
                 </div>
-
                 <div class="d-card">
                     <div style="display:flex; justify-content:space-between; font-size:0.8rem; color:#888;">
-                        <span>Quality</span>
-                        <span id="hud-pct" style="color:white; font-weight:bold;">0%</span>
+                        <span>Straightness</span><span id="hud-pct" style="color:white; font-weight:bold;">0%</span>
                     </div>
                     <div class="gauge-container">
                         <div id="gauge-bar" class="gauge-fill"></div>
-                        <div class="gauge-mark" style="left:50%"></div>
-                        <div class="gauge-mark" style="left:85%"></div>
+                        <div id="mark-reset" class="gauge-mark" style="left:50%; background:#888;"></div>
+                        <div id="mark-top" class="gauge-mark" style="left:85%; background:#fff;"></div>
                     </div>
                 </div>
             </div>
 
             <div class="d-card">
-                <div style="margin-bottom:10px; font-size:0.8rem; color:#888; display:flex; justify-content:space-between;">
-                    <span>Settings</span>
-                    <span>Say "Spotter Start/Pause/Reset"</span>
+                <div style="margin-bottom:10px; font-size:0.8rem; color:#888;">Configuration</div>
+                <div class="ctrl-row" style="margin-bottom:15px;">
+                    <div class="setting-group">
+                        <label>Target</label>
+                        <input id="target-reps" type="number" value="12">
+                    </div>
+                    <div class="setting-group">
+                        <label>Top %</label>
+                        <input id="thresh-top" type="number" value="85">
+                    </div>
+                    <div class="setting-group">
+                        <label>Reset %</label>
+                        <input id="thresh-reset" type="number" value="50">
+                    </div>
                 </div>
                 <div class="ctrl-row">
-                    <div style="display:flex; align-items:center; gap:5px;">
-                        <input id="target-reps" type="number" value="12" title="Target Reps">
-                    </div>
                     <button id="btn-pause" class="btn-ctrl" disabled>Pause</button>
                     <button id="btn-reset" class="btn-ctrl" disabled>Reset</button>
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 
@@ -338,8 +187,7 @@
 <script type="module">
     import {FilesetResolver, PoseLandmarker, DrawingUtils} from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.10";
 
-    // --- 1. DOM ELEMENTS ---
-    // Info Pane
+    // ELEMENTS
     const titleEl = document.getElementById('page-title');
     const refImage = document.getElementById('ref-image');
     const vidEmbed = document.getElementById('video-embed-container');
@@ -348,14 +196,10 @@
     const btnPrev = document.getElementById('prev-btn');
     const btnNext = document.getElementById('next-btn');
     const counterEl = document.getElementById('page-counter');
-    
-    // Menu
     const menuBtn = document.getElementById('menu-btn');
     const sideMenu = document.getElementById('side-menu');
     const menuList = document.getElementById('menu-list');
     const closeMenu = document.getElementById('close-menu');
-
-    // Vision Pane
     const aiVideo = document.getElementById('ai-video');
     const aiCanvas = document.getElementById('ai-canvas');
     const aiCtx = aiCanvas.getContext('2d');
@@ -364,23 +208,26 @@
     const overlayMsg = document.getElementById('overlay-msg');
     const aiSupportMsg = document.getElementById('ai-support-msg');
     
-    // Dashboard
     const elReps = document.getElementById('hud-reps');
     const elPct = document.getElementById('hud-pct');
     const elGauge = document.getElementById('gauge-bar');
     const elStatus = document.getElementById('ai-status');
     const elVoiceStatus = document.getElementById('voice-status');
+    const markTop = document.getElementById('mark-top');
+    const markReset = document.getElementById('mark-reset');
+    
     const inpTarget = document.getElementById('target-reps');
+    const inpTop = document.getElementById('thresh-top');
+    const inpReset = document.getElementById('thresh-reset');
     const btnReset = document.getElementById('btn-reset');
     const btnPause = document.getElementById('btn-pause');
 
-    // --- 2. APP STATE ---
+    // STATE
     let allData = {};
     let currentDayExercises = [];
     let currentIndex = 0;
-    let currentAiType = null;
 
-    // --- 3. AI TRACKER LOGIC ---
+    // --- AI TRACKER ---
     class Tracker {
         constructor() {
             this.active = false;
@@ -389,9 +236,12 @@
             this.reps = 0;
             this.target = 12;
             this.smoothed = 0;
-            this.passedBottom = false;
-            // Config
-            this.thHigh = 85; this.thLow = 50;
+            this.passedReset = false; // "Reset" point reached?
+            
+            // Config Defaults
+            this.bodyPart = "right_arm"; 
+            this.thTop = 85; 
+            this.thReset = 50; 
             this.minAngle = 50; this.maxAngle = 170;
         }
 
@@ -402,15 +252,14 @@
                 baseOptions: { modelAssetPath: "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_full/float16/1/pose_landmarker_full.task" },
                 runningMode: "VIDEO", numPoses: 1
             });
-            console.log("AI Model Loaded");
         }
 
         async startCamera() {
             await this.init();
+            initVoiceCommands(); // Init voice on user gesture
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({video: {facingMode: "user"}, audio: false});
                 aiVideo.srcObject = stream;
-                // Wait for metadata to load to set canvas size correctly
                 aiVideo.onloadeddata = () => {
                     aiCanvas.width = aiVideo.videoWidth;
                     aiCanvas.height = aiVideo.videoHeight;
@@ -420,9 +269,7 @@
                     this.updateStatusUI();
                     this.loop();
                 };
-            } catch(e) {
-                alert("Camera Access Denied: " + e);
-            }
+            } catch(e) { alert("Camera Error: " + e); }
         }
 
         stop() {
@@ -443,12 +290,11 @@
 
         reset() {
             this.reps = 0;
-            this.passedBottom = false;
+            this.passedReset = false;
             this.updateUI();
         }
 
         updateStatusUI() {
-            // Camera Status
             if (!this.active) {
                 elStatus.textContent = "Standby";
                 elStatus.classList.remove("active");
@@ -478,140 +324,141 @@
             elPct.textContent = Math.round(this.smoothed) + "%";
             elGauge.style.width = this.smoothed + "%";
             
-            if(this.smoothed >= this.thHigh) elGauge.style.backgroundColor = "#4ade80"; 
-            else if(this.smoothed <= this.thLow) elGauge.style.backgroundColor = "#ff6b2b";
-            else elGauge.style.backgroundColor = "#fff";
+            // Visual feedback logic
+            let isGood = false;
+            if (this.thTop > this.thReset) {
+                // Push logic: Top is high
+                if (this.smoothed >= this.thTop) isGood = true;
+            } else {
+                // Pull logic: Top is low
+                if (this.smoothed <= this.thTop) isGood = true;
+            }
+            
+            elGauge.style.backgroundColor = isGood ? "#4ade80" : "#ff6b2b";
+            
+            // Markers
+            markTop.style.left = this.thTop + "%";
+            markReset.style.left = this.thReset + "%";
         }
 
         processLandmarks(lms) {
-            if (this.paused) {
-                // Draw static skeleton but don't count
-                this.drawSkeleton(lms);
-                return;
-            }
+            if (this.paused) { this.drawSkeleton(lms); return; }
 
-            // Logic for Bicep Curl (Right Arm: 12-14-16)
-            const s = lms[12], e = lms[14], w = lms[16];
+            // Body Part Map
+            let s, e, w;
+            if (this.bodyPart === "left_arm") { s = lms[11]; e = lms[13]; w = lms[15]; }
+            else if (this.bodyPart === "left_leg") { s = lms[23]; e = lms[25]; w = lms[27]; }
+            else if (this.bodyPart === "right_leg") { s = lms[24]; e = lms[26]; w = lms[28]; }
+            else { s = lms[12]; e = lms[14]; w = lms[16]; } // Default Right Arm
 
-            // Angle Calculation
+            if(!s || !e || !w) return;
+
+            // Angle
             const v1 = {x:s.x-e.x, y:s.y-e.y}, v2 = {x:w.x-e.x, y:w.y-e.y};
             const dot = v1.x*v2.x + v1.y*v2.y;
             const mag = Math.hypot(v1.x,v1.y) * Math.hypot(v2.x,v2.y);
             const ang = Math.acos(dot/mag) * 180 / Math.PI;
 
-            // Normalize
             const pct = Math.max(0, Math.min(1, (ang - this.minAngle)/(this.maxAngle - this.minAngle))) * 100;
             this.smoothed = this.smoothed * 0.8 + pct * 0.2;
 
-            // Rep Counting
-            if(this.smoothed <= this.thLow) this.passedBottom = true;
-            if(this.passedBottom && this.smoothed >= this.thHigh) {
-                this.reps++;
-                this.passedBottom = false;
+            // --- DIRECTIONAL LOGIC ---
+            // Case 1: PUSH (Top > Reset). E.g. Press. Start low, go high, reset low.
+            if (this.thTop > this.thReset) {
+                if (this.smoothed <= this.thReset) this.passedReset = true;
+                if (this.passedReset && this.smoothed >= this.thTop) {
+                    this.reps++;
+                    this.passedReset = false;
+                }
+            } 
+            // Case 2: PULL (Top < Reset). E.g. Curl. Start high, go low, reset high.
+            else {
+                if (this.smoothed >= this.thReset) this.passedReset = true;
+                if (this.passedReset && this.smoothed <= this.thTop) {
+                    this.reps++;
+                    this.passedReset = false;
+                }
             }
 
             this.updateUI();
-            this.drawSkeleton(lms);
+            this.drawSkeleton(lms, s, e, w);
         }
 
-        drawSkeleton(lms) {
+        drawSkeleton(lms, s, e, w) {
             aiCtx.clearRect(0,0, aiCanvas.width, aiCanvas.height);
-            // Note: Canvas is CSS-mirrored, so we draw normal coordinates
-            
             const draw = new DrawingUtils(aiCtx);
             draw.drawConnectors(lms, PoseLandmarker.POSE_CONNECTIONS, {color: "rgba(255,255,255,0.1)", lineWidth: 1});
-            draw.drawLandmarks(lms, {color: "rgba(255,255,255,0.5)", lineWidth: 1, radius: 2});
             
-            // Highlight Working Arm
-            const s = lms[12], e = lms[14], w = lms[16];
-            aiCtx.lineWidth = 5;
-            aiCtx.strokeStyle = "#ff6b2b";
-            aiCtx.beginPath();
-            aiCtx.moveTo(s.x*aiCanvas.width, s.y*aiCanvas.height);
-            aiCtx.lineTo(e.x*aiCanvas.width, e.y*aiCanvas.height);
-            aiCtx.lineTo(w.x*aiCanvas.width, w.y*aiCanvas.height);
-            aiCtx.stroke();
+            if(s && e && w) {
+                aiCtx.lineWidth = 5;
+                aiCtx.strokeStyle = "#ff6b2b";
+                aiCtx.beginPath();
+                aiCtx.moveTo(s.x*aiCanvas.width, s.y*aiCanvas.height);
+                aiCtx.lineTo(e.x*aiCanvas.width, e.y*aiCanvas.height);
+                aiCtx.lineTo(w.x*aiCanvas.width, w.y*aiCanvas.height);
+                aiCtx.stroke();
+            }
         }
 
         async loop() {
             if(!this.active) return;
             if(this.landmarker) {
                 const res = this.landmarker.detectForVideo(aiVideo, performance.now());
-                if(res.landmarks.length > 0) {
-                    this.processLandmarks(res.landmarks[0]);
-                } else {
-                    aiCtx.clearRect(0,0, aiCanvas.width, aiCanvas.height);
-                }
+                if(res.landmarks.length > 0) this.processLandmarks(res.landmarks[0]);
+                else aiCtx.clearRect(0,0, aiCanvas.width, aiCanvas.height);
             }
             window.requestAnimationFrame(() => this.loop());
         }
     }
     const tracker = new Tracker();
 
-    // --- 4. VOICE CONTROL ---
+    // --- VOICE ---
     function initVoiceCommands() {
         if(!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)){
-            elVoiceStatus.textContent = "Voice N/A";
-            return;
+            elVoiceStatus.textContent = "Voice N/A"; return;
         }
         const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
         const recog = new SR();
         recog.continuous = true;
         recog.lang = "en-US";
         recog.interimResults = false;
-        recog.maxAlternatives = 1;
-
+        
         recog.onstart = () => {
             elVoiceStatus.classList.add("active");
             elVoiceStatus.innerHTML = "<span class='dot'></span> Listening";
         };
-
         recog.onresult = (e) => {
             const cmd = e.results[e.results.length-1][0].transcript.trim().toLowerCase();
-            console.log("Voice:", cmd);
-            
+            console.log("Heard:", cmd);
             if(cmd.includes("spotter")) {
-                if(cmd.includes("start") || cmd.includes("resume") || cmd.includes("begin")) {
-                    if(!tracker.active) btnStartCam.click(); // Start if off
-                    else tracker.togglePause(false); // Unpause
+                if(cmd.includes("start") || cmd.includes("resume")) {
+                    if(!tracker.active) btnStartCam.click();
+                    else tracker.togglePause(false);
                 }
-                if(cmd.includes("pause") || cmd.includes("stop") || cmd.includes("wait")) {
-                    tracker.togglePause(true);
-                }
-                if(cmd.includes("reset") || cmd.includes("clear")) {
-                    tracker.reset();
-                }
+                if(cmd.includes("pause") || cmd.includes("stop")) tracker.togglePause(true);
+                if(cmd.includes("reset")) tracker.reset();
             }
         };
-
-        recog.onerror = () => { setTimeout(()=>recog.start(), 2000); };
-        recog.onend = () => { setTimeout(()=>recog.start(), 1500); };
-        recog.start();
+        recog.onerror = () => setTimeout(()=>recog.start(), 2000);
+        recog.onend = () => setTimeout(()=>recog.start(), 1500);
+        try { recog.start(); } catch(e){}
     }
 
-    // --- 5. DATA LOADING & UI LOGIC ---
-    
+    // --- MAIN ---
     async function initApp() {
         try {
             const res = await fetch('data.json');
             if(!res.ok) throw new Error("Could not load data.json");
             allData = await res.json();
-            
             populateMenu();
-            initVoiceCommands();
 
-            // Load Cover Image initially
             titleEl.textContent = "Welcome";
             refImage.src = "images/Cover Image.png"; 
             refImage.style.display = "inline-block";
             contentWrap.innerHTML = `<p style="text-align:center; margin-top:30px; color:#555;">Select a workout from the menu to begin.</p>`;
-            
-            // Hide dashboard/cam initially
             disableVisionPane("Select a workout to start");
 
-        } catch(e) {
-            contentWrap.innerHTML = `<p style="color:red">Error: ${e.message}</p>`;
-        }
+        } catch(e) { contentWrap.innerHTML = `<p style="color:red">Error: ${e.message}</p>`; }
     }
 
     function populateMenu() {
@@ -619,53 +466,30 @@
         allData.workoutPlan.forEach(day => {
             const btn = document.createElement('button');
             btn.textContent = day.dayTitle;
-            btn.onclick = () => {
-                loadDay(day);
-                toggleMenu(false);
-            };
+            btn.onclick = () => { loadDay(day); toggleMenu(false); };
             menuList.appendChild(btn);
         });
     }
 
     function loadDay(day) {
-        tracker.stop(); // Stop camera if running
+        tracker.stop();
         disableVisionPane("Select an exercise");
-        
         titleEl.textContent = day.dayTitle;
         currentDayExercises = day.exercises;
         pagination.classList.add('hidden');
-        
-        // Show Cover Image again for the Day overview
         refImage.src = "images/Cover Image.png";
         refImage.style.display = "inline-block";
         vidEmbed.style.display = "none";
-        vidEmbed.innerHTML = "";
-
-        // Build list
-        contentWrap.innerHTML = '';
-        const purpose = document.createElement('div');
-        purpose.innerHTML = `<p style="background:#fff5f5; border-left:4px solid #f56565; padding:10px;">${day.purpose}</p>`;
-        contentWrap.appendChild(purpose);
+        contentWrap.innerHTML = `<p style="background:#fff5f5; border-left:4px solid #f56565; padding:10px;">${day.purpose}</p>`;
 
         const list = document.createElement('ul');
-        list.style.listStyle = "none";
-        list.style.padding = 0;
-
+        list.style.listStyle = "none"; list.style.padding = 0;
         day.exercises.forEach((ex, idx) => {
             const details = allData.exerciseLibrary[ex.id];
             const li = document.createElement('li');
-            li.style.background = "#fff";
-            li.style.border = "1px solid #eee";
-            li.style.marginBottom = "8px";
-            li.style.padding = "15px";
-            li.style.cursor = "pointer";
-            li.style.borderRadius = "8px";
+            li.style.cssText = "background:#fff; border:1px solid #eee; margin-bottom:8px; padding:15px; cursor:pointer; border-radius:8px;";
             li.innerHTML = `<strong>${details ? details.title : ex.id}</strong> <span style="color:#777; font-size:0.9em; float:right;">${ex.setsAndReps}</span>`;
-            
-            li.onclick = () => {
-                currentIndex = idx;
-                loadExercise(ex.id, ex.setsAndReps);
-            };
+            li.onclick = () => { currentIndex = idx; loadExercise(ex.id, ex.setsAndReps); };
             list.appendChild(li);
         });
         contentWrap.appendChild(list);
@@ -674,35 +498,38 @@
     function loadExercise(id, setsReps) {
         const ex = allData.exerciseLibrary[id];
         if(!ex) return;
-
-        // 1. Update Info Pane (Original App Functionality)
         titleEl.textContent = ex.title;
         pagination.classList.remove('hidden');
         updatePagination();
 
-        // Handle Media
+        // Media
         if(ex.youtubeId) {
             refImage.style.display = "none";
             vidEmbed.style.display = "block";
             vidEmbed.innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${ex.youtubeId}?rel=0" frameborder="0" allowfullscreen></iframe>`;
         } else {
             vidEmbed.style.display = "none";
-            vidEmbed.innerHTML = "";
             refImage.style.display = "inline-block";
             refImage.src = ex.imagePath || "images/Cover Image.png";
         }
 
-        // Build Content
-        contentWrap.innerHTML = `
-            <div class="exercise-sets">${setsReps}</div>
-            ${ex.overview ? `<div class="content-section"><h2>Overview</h2><p>${ex.overview}</p></div>` : ''}
-            ${ex.howTo ? `<div class="content-section"><h2>How To</h2><ul>${ex.howTo.map(i=>`<li>${i}</li>`).join('')}</ul></div>` : ''}
-            ${ex.trainersTip ? `<div class="content-section"><h2>Trainer's Tip</h2><p style="font-style:italic; color:#555;">${ex.trainersTip}</p></div>` : ''}
-        `;
+        // Content
+        contentWrap.innerHTML = `<div class="exercise-sets">${setsReps}</div>` +
+            (ex.overview ? `<div class="content-section"><h2>Overview</h2><p>${ex.overview}</p></div>` : '') +
+            (ex.howTo ? `<div class="content-section"><h2>How To</h2><ul>${ex.howTo.map(i=>`<li>${i}</li>`).join('')}</ul></div>` : '') +
+            (ex.trainersTip ? `<div class="content-section"><h2>Trainer's Tip</h2><p style="font-style:italic; color:#555;">${ex.trainersTip}</p></div>` : '');
 
-        // 2. Update Vision Pane
+        // Tracker Config
         if(ex.aiType) {
-            currentAiType = ex.aiType;
+            // Apply JSON settings or Defaults
+            tracker.bodyPart = ex.aiBodyPart || "right_arm";
+            tracker.thTop = ex.aiTop !== undefined ? ex.aiTop : 85;
+            tracker.thReset = ex.aiReset !== undefined ? ex.aiReset : 50;
+            
+            // Update Inputs
+            inpTop.value = tracker.thTop;
+            inpReset.value = tracker.thReset;
+            
             enableVisionPane(ex.title, setsReps);
         } else {
             disableVisionPane("No AI support for this exercise");
@@ -715,17 +542,14 @@
         btnNext.disabled = currentIndex === currentDayExercises.length - 1;
     }
 
-    // --- VISION PANE CONTROLLERS ---
-
+    // --- CONTROLLERS ---
     function enableVisionPane(title, setsReps) {
-        tracker.stop(); // Reset state
+        tracker.stop();
         camOverlay.style.display = "flex";
         btnStartCam.style.display = "block";
         btnStartCam.textContent = "START CAMERA";
         overlayMsg.textContent = "AI TRACKER READY";
         aiSupportMsg.textContent = `Tracking enabled for ${title}`;
-        
-        // Parse reps for target
         const match = setsReps.match(/x(\d+)/);
         if(match) inpTarget.value = parseInt(match[1]);
         tracker.target = parseInt(inpTarget.value);
@@ -741,44 +565,24 @@
     }
 
     // --- EVENTS ---
-
-    // Nav
-    btnPrev.onclick = () => {
-        if(currentIndex > 0) {
-            currentIndex--;
-            const ex = currentDayExercises[currentIndex];
-            loadExercise(ex.id, ex.setsAndReps);
-        }
-    };
-    btnNext.onclick = () => {
-        if(currentIndex < currentDayExercises.length - 1) {
-            currentIndex++;
-            const ex = currentDayExercises[currentIndex];
-            loadExercise(ex.id, ex.setsAndReps);
-        }
-    };
-
-    // Menu
-    function toggleMenu(open) {
-        if(open) sideMenu.classList.add('open');
-        else sideMenu.classList.remove('open');
-    }
+    btnPrev.onclick = () => { if(currentIndex > 0) { currentIndex--; loadExercise(currentDayExercises[currentIndex].id, currentDayExercises[currentIndex].setsAndReps); }};
+    btnNext.onclick = () => { if(currentIndex < currentDayExercises.length - 1) { currentIndex++; loadExercise(currentDayExercises[currentIndex].id, currentDayExercises[currentIndex].setsAndReps); }};
+    
+    function toggleMenu(open) { if(open) sideMenu.classList.add('open'); else sideMenu.classList.remove('open'); }
     menuBtn.onclick = () => toggleMenu(true);
     closeMenu.onclick = () => toggleMenu(false);
     sideMenu.onclick = (e) => { if(e.target === sideMenu) toggleMenu(false); };
 
-    // Cam Controls
-    btnStartCam.onclick = () => {
-        camOverlay.style.display = "none";
-        tracker.startCamera();
-    };
+    btnStartCam.onclick = () => { camOverlay.style.display = "none"; tracker.startCamera(); };
     btnReset.onclick = () => tracker.reset();
     btnPause.onclick = () => tracker.togglePause();
-    inpTarget.onchange = () => { tracker.target = parseInt(inpTarget.value); };
+    
+    // Config Changes
+    inpTarget.onchange = () => tracker.target = parseInt(inpTarget.value);
+    inpTop.onchange = () => { tracker.thTop = parseInt(inpTop.value); tracker.updateUI(); };
+    inpReset.onchange = () => { tracker.thReset = parseInt(inpReset.value); tracker.updateUI(); };
 
-    // Init
     initApp();
-
 </script>
 </body>
 </html>
