@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-R"">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise Guide</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <main class="exercise-card">
+        <button id="menu-btn" class="menu-btn">&#9776;</button>
+
+        <h1 id="page-title"></h1>
+        
+        <div class="image-container">
+            <img id="page-image" src="" alt="Exercise illustration">
+        </div>
+        
+        <p id="page-overview"></p>
+        <a id="page-link" href="#" target="_blank"></a>
+
+        <hr>
+
+        <section class="content-section">
+            <h2>How-To</h2>
+            <ul id="page-how-to"></ul>
+        </section>
+
+        <section class="content-section">
+            <h2>Our Trainer's Tip</h2>
+            <blockquote id="page-tip"></blockquote>
+        </section>
+
+    </main>
+
+    <nav class="pagination">
+        <button id="prev-btn">Previous</button>
+        <div id="page-counter"></div>
+        <button id="next-btn">Next</button>
+    </nav>
+
+    <nav id="side-menu" class="side-menu hidden">
+        <div class="menu-content">
+            <button id="close-btn" class="close-btn">&times;</button>
+            <h2>All Exercises</h2>
+            <ul id="menu-links">
+                </ul>
+        </div>
+    </nav>
+
+    <script src="app.js"></script>
+</body>
+</html>
