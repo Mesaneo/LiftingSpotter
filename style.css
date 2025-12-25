@@ -1,77 +1,151 @@
 /* Basic Setup */
+html {
+    height: 100%; 
+}
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     background-color: #f4f4f4;
     color: #333;
-    display: grid;
-    place-items: center;
+    display: flex; 
+    flex-direction: column; 
+    height: 100vh; 
+    margin: 0; 
     padding: 20px;
-    box-sizing: border-box; /* Ensures padding doesn't add to width */
+    box-sizing: border-box; 
 }
 
-/* The Main Card - NOW RESPONSIVE */
+/* The Main Card - Full Height */
 .exercise-card {
     background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     border: 1px solid #e0e0e0;
-    max-width: 960px; /* Set a max width for large screens */
-    width: 100%;      /* Fill the available width */
+    max-width: 960px; 
+    width: 100%;      
+    margin-left: auto;  
+    margin-right: auto; 
+    box-sizing: border-box; 
+    position: relative; 
+    
+    display: flex; 
+    flex-direction: column; 
+    flex-grow: 1; 
+    min-height: 0; 
     overflow: hidden; 
-    box-sizing: border-box; /* Ensures padding is included in the width */
-    position: relative; /* NEW: Needed for positioning the menu button */
 }
 
-/* Page Title (Matches mockup) */
+/* Page Title */
 #page-title {
-    font-size: 2.5rem;
-    color: #f56565; /* Orange-red color */
+    font-size: 2.2rem;
+    color: #f56565; 
     padding: 24px 24px 0 24px;
     margin: 0;
+    flex-shrink: 0; 
 }
 
-/* Image */
+/* Image Container */
 .image-container {
-    width: 100%;
-    border-bottom: 2px solid #f56565; /* Orange line from mockup */
+    width: 100%; 
+    border-bottom: 2px solid #f56565; 
     background-color: #fafafa;
     text-align: center;
+    flex-shrink: 0; 
+    display: none; /* Hidden by default, shown by JS */
 }
 #page-image {
     max-width: 100%;
     height: auto;
     object-fit: cover;
+    display: block; 
 }
 
-/* Overview Text */
+/* SCROLLABLE TEXT WRAPPER */
+.text-content-wrapper {
+    flex-grow: 1; 
+    overflow-y: auto; 
+    min-height: 0; 
+    padding: 16px 24px;
+}
+
+#welcome-message {
+    font-size: 1.2rem;
+    color: #555;
+    text-align: center;
+    margin-top: 40px;
+}
+
+/* --- NEW STYLES for Day View --- */
+.day-purpose {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    background-color: #fffaf0;
+    border-left: 4px solid #f56565;
+    padding: 12px 16px;
+    margin: 0 0 24px 0;
+}
+
+.day-exercise-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.day-exercise-list li button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: #f9f9f9;
+    border: 1px solid #eee;
+    padding: 16px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #3182ce;
+    transition: background-color 0.2s;
+}
+
+.day-exercise-list li button:hover {
+    background-color: #f0f5fa;
+}
+
+.day-exercise-list li button span {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: #555;
+    margin-top: 4px;
+}
+
+/* --- STYLES for Exercise View --- */
 #page-overview {
     font-size: 1.1rem;
     line-height: 1.6;
-    padding: 16px 24px;
+    padding: 0;
     margin: 0;
 }
 
 #page-link {
     display: block;
-    padding: 0 24px 16px 24px;
+    padding: 16px 0;
     color: #3182ce;
     font-weight: 500;
 }
 
-/* Content Sections (How-To, Tips, etc.) */
 .content-section {
-    padding: 8px 24px;
+    padding: 8px 0; 
 }
 
 .content-section h2 {
     font-size: 1.5rem;
-    color: #f56565; /* Orange-red color */
+    color: #f56565; 
     border-bottom: 2px solid #f0f0f0;
     padding-bottom: 8px;
     margin-top: 0;
 }
 
-/* Lists for How-To, Benefits, Muscles */
 .content-section ul {
     list-style-type: disc;
     padding-left: 20px;
@@ -82,7 +156,6 @@ body {
     margin-bottom: 8px;
 }
 
-/* Trainer's Tip Blockquote */
 #page-tip {
     font-size: 1.1rem;
     font-style: italic;
@@ -93,7 +166,6 @@ body {
     line-height: 1.6;
 }
 
-/* Horizontal Rule for separation */
 hr {
     border: 0;
     height: 1px;
@@ -101,16 +173,22 @@ hr {
     margin: 16px 0;
 }
 
-
 /* Navigation Buttons */
 .pagination {
     display: flex;
     justify-content: space-between;
-    align-items: center; /* NEW: To vertically center the counter */
-    max-width: 960px; /* Match the card width */
+    align-items: center; 
+    max-width: 960px; 
     width: 100%;
     margin-top: 16px;
-    box-sizing: border-box; /* Ensures padding is included in the width */
+    box-sizing: border-box; 
+    margin-left: auto;  
+    margin-right: auto; 
+    flex-shrink: 0; 
+}
+
+.pagination.hidden {
+    display: none; /* Hide pagination */
 }
 
 .pagination button {
@@ -124,43 +202,15 @@ hr {
     color: white;
     transition: background-color 0.2s;
 }
-
-.pagination button:hover {
-    background-color: #c53030;
-}
-
-.pagination button:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-}
-
-/* Media query for smaller screens */
-@media (max-width: 600px) {
-    body {
-        padding: 10px; /* Less padding on small screens */
-    }
-    
-    #page-title {
-        font-size: 1.8rem; /* Smaller title */
-        padding: 16px 16px 0 16px;
-    }
-    
-    .content-section, #page-overview, #page-link {
-        padding-left: 16px;
-        padding-right: 16px;
-    }
-}
-
-/* ------------------------------ */
-/* --- NEW STYLES FOR MENU ------ */
-/* ------------------------------ */
+.pagination button:hover { background-color: #c53030; }
+.pagination button:disabled { background-color: #cccccc; cursor: not-allowed; }
 
 /* Page Counter */
 #page-counter {
     font-size: 1rem;
     font-weight: 500;
     color: #555;
-    flex-grow: 1; /* Makes it take the space between buttons */
+    flex-grow: 1; 
     text-align: center;
 }
 
@@ -174,22 +224,21 @@ hr {
     background: none;
     border: none;
     cursor: pointer;
-    z-index: 100; /* On top of other content */
+    z-index: 100; 
 }
 
-/* The side menu overlay (hidden by default) */
+/* Side Menu */
 .side-menu {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+    background-color: rgba(0, 0, 0, 0.5); 
     z-index: 1000;
     transition: opacity 0.3s ease;
 }
 
-/* The actual menu content box */
 .side-menu .menu-content {
     position: absolute;
     top: 0;
@@ -205,7 +254,6 @@ hr {
     transition: transform 0.3s ease;
 }
 
-/* Close button inside the menu */
 .close-btn {
     position: absolute;
     top: 10px;
@@ -224,7 +272,6 @@ hr {
     padding-bottom: 10px;
 }
 
-/* List of page links */
 #menu-links {
     list-style: none;
     padding: 0;
@@ -245,18 +292,81 @@ hr {
     border-bottom: 1px solid #f0f0f0;
     cursor: pointer;
 }
-
-#menu-links li button:hover {
-    background-color: #f9f9f9;
-}
-
+#menu-links li button:hover { background-color: #f9f9f9; }
 
 /* Helper class to hide/show the menu */
 .hidden {
     opacity: 0;
-    pointer-events: none; /* Can't click on it */
+    pointer-events: none; 
 }
 
 .hidden .menu-content {
-    transform: translateX(100%); /* Slides menu off-screen */
+    transform: translateX(100%); 
+}
+
+/* Media query for smaller screens */
+@media (max-width: 600px) {
+    body {
+        padding: 10px; 
+        height: 100vh; 
+    }
+    
+    #page-title {
+        font-size: 1.6rem; 
+        padding: 16px 45px 0 16px; /* Make space for menu button */
+    }
+    
+    .text-content-wrapper {
+        padding: 16px;
+    }
+
+    .menu-btn {
+        top: 10px;
+        right: 10px;
+    }
+}
+
+.exercise-sets {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #f56565; /* Match the other theme color */
+    padding-bottom: 10px;
+    border-bottom: 2px solid #f0f0f0;
+    margin: 0 0 16px 0;
+}
+
+.media-wrapper {
+    width: 100%;
+    flex-shrink: 0;
+    border-bottom: 2px solid #f56565;
+}
+
+/* Styles for image */
+#image-container {
+    background-color: #fafafa;
+    text-align: center;
+}
+#page-image {
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+}
+
+/* Styles for video (16:9 aspect ratio) */
+#video-container {
+    position: relative;
+    padding-top: 56.25%; /* 16:9 ratio (9 / 16 = 0.5625) */
+    background-color: #000;
+    height: 0;
+    overflow: hidden;
+}
+#video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
 }

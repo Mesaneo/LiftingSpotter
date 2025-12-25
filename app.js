@@ -1,24 +1,25 @@
-// Wait for the DOM to be fully loaded before running the script
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- 1. STATE ---
-    let allPagesData = [];
-    let currentPageIndex = 0;
+    let allData = {}; 
+    let currentDayExercises = []; 
+    let currentExerciseIndex = 0; 
     let touchStartX = null;
     let touchMoveX = null;
 
-    // --- 2. GRAB DOM ELEMENTS ---
+    // --- 2. GRAB DOM ELEMENTS (Corrected) ---
+    const cardEl = document.querySelector('.exercise-card');
     const titleEl = document.getElementById('page-title');
+    
+    // --- CORRECTED Media Elements ---
+    const imageContainerEl = document.getElementById('image-container'); // This was the problem area
     const imageEl = document.getElementById('page-image');
-    const overviewEl = document.getElementById('page-overview');
-    const linkEl = document.getElementById('page-link');
-    const howToListEl = document.getElementById('page-how-to');
-    const tipEl = document.getElementById('page-tip');
+    const videoContainerEl = document.getElementById('video-container'); // This was the problem area
+    
+    const contentWrapperEl = document.getElementById('text-content-wrapper');
+    const paginationEl = document.getElementById('pagination');
     const prevBtn = document.getElementById('prev-btn');
     const nextBtn = document.getElementById('next-btn');
-    const cardEl = document.querySelector('.exercise-card');
-    
-    // --- NEW: Grab menu and counter elements ---
     const pageCounterEl = document.getElementById('page-counter');
     const menuBtn = document.getElementById('menu-btn');
     const closeBtn = document.getElementById('close-btn');
@@ -26,11 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const menuContentEl = document.querySelector('.menu-content');
     const menuLinksEl = document.getElementById('menu-links');
 
-
-    // --- 3. FUNCTIONS ---
+    // --- 3. MAIN FUNCTIONS ---
 
     /**
-     * Fetches exercise data and initializes the first page.
+     * Fetches exercise data and initializes the app.
      */
     async function init() {
         try {
@@ -38,68 +38,228 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            allPagesData = await response.json();
+            allData = await response.json();
             
-            // --- NEW: Populate the side menu ---
+            if (!allData.workoutPlan || !allData.exerciseLibrary) {
+                throw new Error("Data.json is in the wrong format.");
+            }
+            
             populateSideMenu();
+            addEventListeners();
 
-            // Load the first page
-            displayPage(currentPageIndex);
-            
-            // Add event listeners for navigation
-            prevBtn.addEventListener('click', showPrevPage);
-            nextBtn.addEventListener('click', showNextPage);
-            
-            // Add touch event listeners for swiping
-            cardEl.addEventListener('touchstart', handleTouchStart);
-            cardEl.addEventListener('touchmove', handleTouchMove);
-            cardEl.addEventListener('touchend', handleTouchEnd);
-
-            // --- NEW: Add menu event listeners ---
-            menuBtn.addEventListener('click', toggleMenu);
-            closeBtn.addEventListener('click', toggleMenu);
-            sideMenuEl.addEventListener('click', closeMenuOnOverlayClick);
-            // Stop clicks inside the menu from closing it
-            menuContentEl.addEventListener('click', (e) => e.stopPropagation());
-
-
-        } catch (error)
-        {
+        } catch (error) {
             console.error("Could not fetch or parse data:", error);
-            // Display an error to the user
-            document.body.innerHTML = '<p style="color: red;">Error loading content. Please try again later.</p>';
+            titleEl.textContent = "Error";
+            contentWrapperEl.innerHTML = `<p style="color: red;">Error loading content: ${error.message}</p>`;
         }
     }
 
     /**
-     * Renders a page's content based on its index.
-     * @param {number} index - The index of the page to display from allPagesData.
+     * Attaches all primary event listeners.
      */
-    function displayPage(index) {
-        const page = allPagesData[index];
-
-        // 1. Update simple text/image content
-        titleEl.textContent = page.title;
-        imageEl.src = page.imagePath;
-        imageEl.alt = page.title; // Good for accessibility
-        overviewEl.textContent = page.overview;
-        linkEl.textContent = page.relatedLinkText;
-        linkEl.href = page.relatedLinkUrl;
-        tipEl.textContent = page.trainersTip;
-
-        // 2. Update lists (using a helper function)
-        populateList(howToListEl, page.howTo);
-
-        // 3. Update navigation button states
-        updateNavButtons();
+    function addEventListeners() {
+        // Navigation
+        prevBtn.addEventListener('click', showPrevExercise);
+        nextBtn.addEventListener('click', showNextExercise);
         
-        // --- NEW: Update Page Counter ---
-        pageCounterEl.textContent = `${index + 1} / ${allPagesData.length}`;
+        // Swiping
+        cardEl.addEventListener('touchstart', handleTouchStart);
+        cardEl.addEventListener('touchmove', handleTouchMove);
+        cardEl.addEventListener('touchend', handleTouchEnd);
+
+        // Menu
+        menuBtn.addEventListener('click', toggleMenu);
+        closeBtn.addEventListener('click', toggleMenu);
+        sideMenuEl.addEventListener('click', closeMenuOnOverlayClick);
     }
 
     /**
-     * Helper function to fill a <ul> with items from an array.
+     * Fills the side menu with links to every "Day" in the plan.
      */
+    function populateSideMenu() {
+        menuLinksEl.innerHTML = ''; // Clear old links
+        
+        allData.workoutPlan.forEach(day => {
+            const li = document.createElement('li');
+            const button = document.createElement('button');
+            button.textContent = day.dayTitle;
+            button.dataset.dayId = day.dayId; 
+            
+            button.addEventListener('click', () => {
+                displayDayView(day);
+                toggleMenu(); // Close the menu
+            });
+            
+            li.appendChild(button);
+            menuLinksEl.appendChild(li);
+        });
+    }
+
+    /**
+     * Displays the "Day" view with its purpose and list of exercises.
+     * @param {object} day - The day object from allData.workoutPlan
+     */
+    function displayDayView(day) {
+        // Set main title
+        titleEl.textContent = day.dayTitle;
+        
+        // --- This is line 110, it should now work ---
+        imageContainerEl.style.display = 'none';
+        videoContainerEl.style.display = 'none'; // Hide video
+        videoContainerEl.innerHTML = ''; // Stop any playing videos
+        paginationEl.classList.add('hidden');
+        
+        // Clear old content
+        contentWrapperEl.innerHTML = '';
+        
+        // Add Day Purpose
+        const purposeEl = document.createElement('p');
+        purposeEl.className = 'day-purpose';
+        purposeEl.textContent = day.purpose;
+        contentWrapperEl.appendChild(purposeEl);
+        
+        // Add Exercise List
+        const listEl = document.createElement('ol');
+        listEl.className = 'day-exercise-list';
+        
+        // Store this day's exercise list for nav
+        currentDayExercises = day.exercises;
+        
+        day.exercises.forEach((exercise, index) => {
+            const exerciseDetails = allData.exerciseLibrary[exercise.id];
+            
+            if (!exerciseDetails) {
+                console.warn(`Could not find exercise with ID: ${exercise.id}`);
+                return;
+            }
+
+            const li = document.createElement('li');
+            const button = document.createElement('button');
+            
+            button.innerHTML = `
+                ${exerciseDetails.title}
+                <span>${exercise.setsAndReps}</span>
+            `;
+            
+            button.dataset.index = index;
+            button.dataset.exerciseId = exercise.id;
+            
+            button.addEventListener('click', () => {
+                currentExerciseIndex = index;
+                displayExerciseView(exercise.id, exercise.setsAndReps);
+            });
+            
+            li.appendChild(button);
+            listEl.appendChild(li);
+        });
+        
+        contentWrapperEl.appendChild(listEl);
+    }
+
+    /**
+     * Displays the detailed view for a single exercise.
+     * @param {string} exerciseId - The ID of the exercise from the library.
+     * @param {string} setsAndReps - The sets/reps string for this specific day.
+     */
+    function displayExerciseView(exerciseId, setsAndReps) {
+        const exercise = allData.exerciseLibrary[exerciseId];
+        
+        if (!exercise) {
+            titleEl.textContent = "Error";
+            contentWrapperEl.innerHTML = `<p>Exercise not found.</p>`;
+            return;
+        }
+
+        // Set title
+        titleEl.textContent = exercise.title;
+        
+        // --- NEW MEDIA LOGIC ---
+        if (exercise.youtubeId) {
+            // Show video, hide image
+            imageContainerEl.style.display = 'none';
+            videoContainerEl.style.display = 'block';
+
+            // Create the iframe
+            videoContainerEl.innerHTML = `
+                <iframe 
+                    src="https://www.youtube.com/embed/${exercise.youtubeId}?autoplay=0&modestbranding=1&rel=0" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>`;
+        } else {
+            // Show image, hide video
+            imageContainerEl.style.display = 'block';
+            videoContainerEl.style.display = 'none';
+            videoContainerEl.innerHTML = ''; // Clear any old iframe
+
+            // Set image source
+            imageEl.src = exercise.imagePath;
+            imageEl.alt = exercise.title;
+        }
+        
+        // Show navigation
+        paginationEl.classList.remove('hidden');
+        
+        // Clear wrapper and build content
+        contentWrapperEl.innerHTML = '';
+
+        // Add the Sets and Reps as a sub-header
+        const setsEl = document.createElement('h2');
+        setsEl.className = 'exercise-sets';
+        setsEl.textContent = setsAndReps;
+        contentWrapperEl.appendChild(setsEl);
+        
+        // Overview
+        if (exercise.overview) {
+            const p = document.createElement('p');
+            p.id = 'page-overview';
+            p.textContent = exercise.overview;
+            contentWrapperEl.appendChild(p);
+        }
+        
+        // Related Link
+        if (exercise.relatedLink) {
+            const a = document.createElement('a');
+            a.id = 'page-link';
+            a.href = '#'; 
+            a.textContent = exercise.relatedLink;
+            a.target = '_blank';
+            contentWrapperEl.appendChild(a);
+        }
+        
+        contentWrapperEl.appendChild(document.createElement('hr'));
+        
+        // How-To Section
+        if (exercise.howTo && exercise.howTo.length > 0) {
+            const howToSection = document.createElement('section');
+            howToSection.className = 'content-section';
+            howToSection.innerHTML = `<h2>How-To</h2>`;
+            const ul = document.createElement('ul');
+            populateList(ul, exercise.howTo);
+            howToSection.appendChild(ul);
+            contentWrapperEl.appendChild(howToSection);
+        }
+        
+        // Trainer's Tip Section
+        if (exercise.trainersTip) {
+            const tipSection = document.createElement('section');
+            tipSection.className = 'content-section';
+            tipSection.innerHTML = `<h2>Our Trainer's Tip</h2>`;
+            const bq = document.createElement('blockquote');
+            bq.id = 'page-tip';
+            bq.textContent = exercise.trainersTip;
+            tipSection.appendChild(bq);
+            contentWrapperEl.appendChild(tipSection);
+        }
+        
+        // Update nav state
+        updateNavButtons();
+    }
+    
+
+    // --- 4. NAVIGATION & HELPERS ---
+
     function populateList(listElement, items) {
         listElement.innerHTML = '';
         items.forEach(item => {
@@ -109,32 +269,40 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    /**
-     * Disables/Enables nav buttons based on the current page.
-     */
     function updateNavButtons() {
-        prevBtn.disabled = (currentPageIndex === 0);
-        nextBtn.disabled = (currentPageIndex === allPagesData.length - 1);
+        prevBtn.disabled = (currentExerciseIndex === 0);
+        nextBtn.disabled = (currentExerciseIndex === currentDayExercises.length - 1);
+        pageCounterEl.textContent = `${currentExerciseIndex + 1} / ${currentDayExercises.length}`;
     }
 
-    // --- 4. NAVIGATION EVENT HANDLERS ---
-
-    function showNextPage() {
-        if (currentPageIndex < allPagesData.length - 1) {
-            currentPageIndex++;
-            displayPage(currentPageIndex);
+    function showNextExercise() {
+        if (currentExerciseIndex < currentDayExercises.length - 1) {
+            currentExerciseIndex++;
+            const nextExercise = currentDayExercises[currentExerciseIndex];
+            displayExerciseView(nextExercise.id, nextExercise.setsAndReps);
         }
     }
 
-    function showPrevPage() {
-        if (currentPageIndex > 0) {
-            currentPageIndex--;
-            displayPage(currentPageIndex);
+    function showPrevExercise() {
+        if (currentExerciseIndex > 0) {
+            currentExerciseIndex--;
+            const prevExercise = currentDayExercises[currentExerciseIndex];
+            displayExerciseView(prevExercise.id, prevExercise.setsAndReps);
         }
     }
     
-    // --- 5. SWIPE HANDLER FUNCTIONS ---
+    // --- 5. MENU & SWIPE HANDLERS ---
 
+    function toggleMenu() {
+        sideMenuEl.classList.toggle('hidden');
+    }
+
+    function closeMenuOnOverlayClick(event) {
+        if (event.target === sideMenuEl) {
+            toggleMenu();
+        }
+    }
+    
     function handleTouchStart(event) {
         touchStartX = event.touches[0].clientX;
         touchMoveX = null; 
@@ -145,75 +313,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function handleTouchEnd() {
-        if (touchMoveX === null || touchStartX === null) {
+        if (paginationEl.classList.contains('hidden')) {
             return;
         }
+        if (touchMoveX === null || touchStartX === null) return;
         let swipeDiff = touchStartX - touchMoveX;
         let swipeThreshold = 50; 
 
         if (swipeDiff > swipeThreshold) {
-            showNextPage();
+            showNextExercise();
         } else if (swipeDiff < -swipeThreshold) {
-            showPrevPage();
+            showPrevExercise();
         }
         touchStartX = null;
         touchMoveX = null;
     }
 
-    
-    // --- 6. NEW: MENU FUNCTIONS ---
-
-    /**
-     * Fills the side menu with links to every page.
-     */
-    function populateSideMenu() {
-        menuLinksEl.innerHTML = ''; // Clear old links
-        allPagesData.forEach((page, index) => {
-            const li = document.createElement('li');
-            const button = document.createElement('button');
-            button.textContent = page.title;
-            // Store the index on the button itself
-            button.dataset.index = index; 
-            button.addEventListener('click', jumpToPage);
-            
-            li.appendChild(button);
-            menuLinksEl.appendChild(li);
-        });
-    }
-
-    /**
-     * Jumps to a specific page from a menu click.
-     */
-    function jumpToPage(event) {
-        // Get the index we stored in the data-index attribute
-        const newIndex = parseInt(event.target.dataset.index);
-        
-        if (!isNaN(newIndex)) {
-            currentPageIndex = newIndex;
-            displayPage(currentPageIndex);
-            toggleMenu(); // Close the menu
-        }
-    }
-
-    /**
-     * Shows or hides the side menu.
-     */
-    function toggleMenu() {
-        sideMenuEl.classList.toggle('hidden');
-    }
-
-    /**
-     * Closes the menu ONLY if the click is on the dark overlay.
-     */
-    function closeMenuOnOverlayClick(event) {
-        // If the click was directly on the overlay, close the menu
-        if (event.target === sideMenuEl) {
-            toggleMenu();
-        }
-    }
-
-
-    // --- 7. INITIALIZE THE APP ---
+    // --- 6. INITIALIZE THE APP ---
     init();
 
 });

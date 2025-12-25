@@ -11,30 +11,21 @@
     <main class="exercise-card">
         <button id="menu-btn" class="menu-btn">&#9776;</button>
 
-        <h1 id="page-title"></h1>
+        <h1 id="page-title">Welcome!</h1>
         
-        <div class="image-container">
-            <img id="page-image" src="" alt="Exercise illustration">
+		<div id="image-container" class="media-wrapper">
+            <img id="page-image" src="/images/Cover Image.png" alt="Workout Cover Image">
         </div>
-        
-        <p id="page-overview"></p>
-        <a id="page-link" href="#" target="_blank"></a>
-
-        <hr>
-
-        <section class="content-section">
-            <h2>How-To</h2>
-            <ul id="page-how-to"></ul>
-        </section>
-
-        <section class="content-section">
-            <h2>Our Trainer's Tip</h2>
-            <blockquote id="page-tip"></blockquote>
-        </section>
+        <div id="video-container" class="media-wrapper" style="display: none;">
+            </div>
+			
+        <div id="text-content-wrapper" class="text-content-wrapper">
+            <p id="welcome-message">Please select a workout from the menu to begin.</p>
+        </div> 
 
     </main>
 
-    <nav class="pagination">
+    <nav id="pagination" class="pagination hidden">
         <button id="prev-btn">Previous</button>
         <div id="page-counter"></div>
         <button id="next-btn">Next</button>
@@ -43,7 +34,7 @@
     <nav id="side-menu" class="side-menu hidden">
         <div class="menu-content">
             <button id="close-btn" class="close-btn">&times;</button>
-            <h2>All Exercises</h2>
+            <h2>Workout Plan</h2>
             <ul id="menu-links">
                 </ul>
         </div>

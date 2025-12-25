@@ -1,5 +1,301 @@
-[
-  {
+{
+  "workoutPlan": [
+    {
+      "dayId": "day1",
+      "dayTitle": "Day 1 \u2013 Chest & Triceps (Push A)",
+      "purpose": "Builds upper-body pressing strength and long-head triceps mass.",
+      "exercises": [
+        {
+          "id": "dumbbell-chest-press",
+          "setsAndReps": "4\u00d78\u201310"
+        },
+        {
+          "id": "dumbbell-incline-chest-press",
+          "setsAndReps": "3\u00d78\u201310"
+        },
+        {
+          "id": "dumbbell-chest-fly",
+          "setsAndReps": "3\u00d710\u201312"
+        },
+        {
+          "id": "overhead-tricep-extension",
+          "setsAndReps": "3\u00d710\u201312"
+        },
+        {
+          "id": "dumbbell-tricep-kickback",
+          "setsAndReps": "2\u00d712\u201315"
+        },
+        {
+          "id": "post-work-out-body-stretch",
+          "setsAndReps": "15 min"
+        }
+      ]
+    },
+    {
+      "dayId": "day2",
+      "dayTitle": "Day 2 \u2013 Back & Biceps (Pull A)",
+      "purpose": "Strengthens lats, rhomboids, and biceps while improving posture.",
+      "exercises": [
+        {
+          "id": "bent-over-dumbbell-rows",
+          "setsAndReps": "4\u00d78\u201310"
+        },
+        {
+          "id": "bent-over-single-arm-dumbbell-row",
+          "setsAndReps": "3\u00d710 per side"
+        },
+        {
+          "id": "dumbbell-hammer-curls",
+          "setsAndReps": "3\u00d710\u201312"
+        },
+        {
+          "id": "dumbbell-concentration-curls",
+          "setsAndReps": "3\u00d710\u201312"
+        },
+        {
+          "id": "dumbbell-pullover",
+          "setsAndReps": "2\u00d712"
+        },
+        {
+          "id": "post-work-out-body-stretch",
+          "setsAndReps": "15 min"
+        }
+      ]
+    },
+    {
+      "dayId": "day3",
+      "dayTitle": "Day 3 \u2013 Shoulders & Arms",
+      "purpose": "Builds shoulder roundness and keeps triceps/biceps stimulated between heavy push/pull days.",
+      "exercises": [
+        {
+          "id": "dumbbell-shoulder-press",
+          "setsAndReps": "4\u00d78\u201310"
+        },
+        {
+          "id": "dumbbell-lateral-raises",
+          "setsAndReps": "3\u00d712"
+        },
+        {
+          "id": "dumbbell-front-raises",
+          "setsAndReps": "3\u00d712"
+        },
+        {
+          "id": "dumbbell-skull-crushers",
+          "setsAndReps": "3\u00d710\u201312"
+        },
+        {
+          "id": "dumbbell-zottman-curls",
+          "setsAndReps": "3\u00d710\u201312"
+        }
+      ]
+    },
+    {
+      "dayId": "day4",
+      "dayTitle": "Day 4 \u2013 Chest & Triceps (Push B)",
+      "purpose": "Reinforces pressing strength and arm endurance.",
+      "exercises": [
+        {
+          "id": "dumbbell-floor-press",
+          "setsAndReps": "4\u00d78"
+        },
+        {
+          "id": "dumbbell-incline-chest-flys",
+          "setsAndReps": "3\u00d710\u201312"
+        },
+        {
+          "id": "overhead-tricep-extension",
+          "setsAndReps": "3\u00d710"
+        },
+        {
+          "id": "dumbbell-tricep-kickback",
+          "setsAndReps": "2\u00d715"
+        },
+        {
+          "id": "upright-dumbbell-rows",
+          "setsAndReps": "2x12"
+        }
+      ]
+    },
+    {
+      "dayId": "day5",
+      "dayTitle": "Day 5 \u2013 Back & Biceps (Pull B)",
+      "purpose": "Posterior-chain balance and arm shape.",
+      "exercises": [
+        {
+          "id": "bent-over-dumbbell-rows",
+          "setsAndReps": "3\u00d78\u201310"
+        },
+        {
+          "id": "dumbbell-rear-delt-flys",
+          "setsAndReps": "3\u00d712"
+        },
+        {
+          "id": "dumbbell-scapular-rows",
+          "setsAndReps": "3\u00d712"
+        },
+        {
+          "id": "dumbbell-hammer-curls",
+          "setsAndReps": "3\u00d710\u201312"
+        },
+        {
+          "id": "dumbbell-concentration-curls",
+          "setsAndReps": "2\u00d712\u201315"
+        }
+      ]
+    },
+    {
+      "dayId": "day6",
+      "dayTitle": "Day 6 \u2013 Shoulders & Chest Finisher",
+      "purpose": "Shoulder fullness and secondary chest activation to close the week.",
+      "exercises": [
+        {
+          "id": "dumbbell-arnold-press",
+          "setsAndReps": "4\u00d710"
+        },
+        {
+          "id": "dumbbell-lateral-raises",
+          "setsAndReps": "3\u00d712"
+        },
+        {
+          "id": "dumbbell-shrugs",
+          "setsAndReps": "3\u00d712\u201315"
+        },
+        {
+          "id": "dumbbell-chest-press",
+          "setsAndReps": "3\u00d710"
+        },
+        {
+          "id": "overhead-tricep-extension",
+          "setsAndReps": "2\u00d712"
+        }
+      ]
+    },
+    {
+      "dayId": "other",
+      "dayTitle": "Other Exercises",
+      "purpose": "A complete library of all other exercises available for reference, substitution, or creating your own workouts.",
+      "exercises": [
+        {
+          "id": "dumbbell-alternating-shoulder-press",
+          "setsAndReps": "Reference"
+        },
+        {
+          "id": "dumbbell-bicep-curls",
+          "setsAndReps": "Reference"
+        },
+        {
+          "id": "dumbbell-calf-raise",
+          "setsAndReps": "Reference"
+        },
+        {
+          "id": "dumbbell-crunch",
+          "setsAndReps": "Reference"
+        },
+        {
+          "id": "dumbbell-decline-chest-flys",
+          "setsAndReps": "Reference"
+        },
+        {
+          "id": "dumbbell-decline-chest-press",
+          "setsAndReps": "Reference"
+        },
+        {
+          "id": "dumbbell-external-rotations",
+          "setsAndReps": "Reference"
+        },
+        {
+          "id": "dumbbell-farmers-walk",
+          "setsAndReps": "Reference"
+        },
+        {
+          "id": "dumbbell-front-squat",
+          "setsAndReps": "Reference"
+        },
+        {
+          "id": "dumbbell-glute-bridge",
+          "setsAndReps": "Reference"
+        },
+        {
+          "id": "dumbbell-goblet-split-squat",
+          "setsAndReps": "Reference"
+        },
+        {
+          "id": "dumbbell-goblet-squat",
+          "setsAndReps": "Reference"
+        },
+        {
+          "id": "dumbbell-iron-cross",
+          "setsAndReps": "Reference"
+        },
+        {
+          "id": "dumbbell-lunges",
+          "setsAndReps": "Reference"
+        },
+        {
+          "id": "dumbbell-renegade-rows",
+          "setsAndReps": "Reference"
+        },
+        {
+          "id": "dumbbell-romanian-deadlifts",
+          "setsAndReps": "Reference"
+        },
+        {
+          "id": "dumbbell-russian-twists",
+          "setsAndReps": "Reference"
+        },
+        {
+          "id": "dumbbell-side-bend",
+          "setsAndReps": "Reference"
+        },
+        {
+          "id": "dumbbell-side-lunge",
+          "setsAndReps": "Reference"
+        },
+        {
+          "id": "dumbbell-single-leg-deadlifts",
+          "setsAndReps": "Reference"
+        },
+        {
+          "id": "dumbbell-spell-caster",
+          "setsAndReps": "Reference"
+        },
+        {
+          "id": "dumbbell-squat-svend-press",
+          "setsAndReps": "Reference"
+        },
+        {
+          "id": "dumbbell-static-lunge",
+          "setsAndReps": "Reference"
+        },
+        {
+          "id": "dumbbell-step-up",
+          "setsAndReps": "Reference"
+        },
+        {
+          "id": "dumbbell-stiff-leg-deadlift",
+          "setsAndReps": "Reference"
+        },
+        {
+          "id": "dumbbell-sumo-squat",
+          "setsAndReps": "Reference"
+        },
+        {
+          "id": "dumbbell-swing",
+          "setsAndReps": "Reference"
+        },
+        {
+          "id": "dumbbell-thrusters",
+          "setsAndReps": "Reference"
+        },
+        {
+          "id": "dumbbell-v-up",
+          "setsAndReps": "Reference"
+        }
+      ]
+    }
+  ],
+  "exerciseLibrary": {
+    "dumbbell-bicep-curls": {
       "title": "Dumbbell Bicep Curls",
       "imagePath": "/images/Dumbbell Bicep Curls.png",
       "overview": "Dumbbell Bicep Curls are fundamental in building upper arm strength and aesthetics, primarily targeting the biceps brachii.",
@@ -22,7 +318,7 @@
       ],
       "trainersTip": "Focus on slow, controlled movements to maximize muscle engagement. Avoid swinging the dumbbells."
     },
-    {
+    "overhead-tricep-extension": {
       "title": "Overhead Tricep Extension",
       "imagePath": "/images/Overhead Tricep Extension.png",
       "overview": "The Overhead Tricep Extension effectively targets the triceps, crucial for pushing movements and overall arm definition.",
@@ -42,7 +338,7 @@
       ],
       "trainersTip": "Ensure your elbows don't flare out to maintain focus on the triceps."
     },
-    {
+    "dumbbell-tricep-kickback": {
       "title": "Dumbbell Tricep Kickback",
       "imagePath": "/images/Dumbbell Tricep Kickback.png",
       "overview": "Dumbbell Tricep Kickbacks are excellent for isolating the triceps, enhancing muscle tone and strength.",
@@ -62,7 +358,7 @@
       ],
       "trainersTip": "Keep your movements controlled, focusing on the triceps contraction."
     },
-    {
+    "dumbbell-calf-raise": {
       "title": "Dumbbell Calf Raise",
       "imagePath": "/images/Dumbbell Calf Raise.png",
       "overview": "Dumbbell Calf Raises strengthen and define the lower leg, improving balance and lower body strength.",
@@ -82,7 +378,7 @@
       ],
       "trainersTip": "For increased stability, perform this exercise near a wall or a sturdy object."
     },
-    {
+    "dumbbell-sumo-squat": {
       "title": "Dumbbell Sumo Squat",
       "imagePath": "/images/Dumbbell Sumo Squat.png",
       "overview": "Dumbbell Sumo Squats work on the lower body, particularly targeting the inner thighs, glutes, and quads.",
@@ -102,9 +398,9 @@
         "Squat down, keeping your back straight and chest up.",
         "Push through your heels to return to the starting position."
       ],
-      "trainersTip": "Ensure your knees don’t cave in and align them with your toes during the squat."
+      "trainersTip": "Ensure your knees don\u2019t cave in and align them with your toes during the squat."
     },
-    {
+    "bent-over-dumbbell-rows": {
       "title": "Bent Over Dumbbell Rows",
       "imagePath": "/images/Bent Over Dumbbell Rows.png",
       "overview": "Bent Over Dumbbell Rows are key for developing back strength and posture, targeting the upper and middle back.",
@@ -126,7 +422,7 @@
       ],
       "trainersTip": "Avoid rounding your back; keep it neutral throughout the exercise."
     },
-    {
+    "upright-dumbbell-rows": {
       "title": "Upright Dumbbell Rows",
       "imagePath": "/images/Upright Dumbbell Rows.png",
       "overview": "Upright Dumbbell Rows effectively work the shoulders and upper back, enhancing shoulder stability and strength.",
@@ -147,7 +443,7 @@
       ],
       "trainersTip": "Keep the lift controlled and avoid jerking to reduce the risk of injury."
     },
-    {
+    "dumbbell-front-raises": {
       "title": "Dumbbell Front Raises",
       "imagePath": "/images/Dumbbell Front Raises.png",
       "overview": "Dumbbell Front Raises primarily target the anterior deltoids, essential for front shoulder development.",
@@ -168,7 +464,7 @@
       ],
       "trainersTip": "Maintain a slight bend in your elbows throughout the exercise to protect your joints."
     },
-    {
+    "dumbbell-lateral-raises": {
       "title": "Dumbbell Lateral Raises",
       "imagePath": "/images/Dumbbell Lateral Raises.png",
       "overview": "Dumbbell Lateral Raises are excellent for targeting the lateral part of the deltoids, crucial for shoulder width and aesthetics.",
@@ -188,7 +484,7 @@
       ],
       "trainersTip": "Focus on lifting with your shoulders, not with momentum or your back."
     },
-    {
+    "dumbbell-shoulder-press": {
       "title": "Dumbbell Shoulder Press",
       "imagePath": "/images/Dumbbell Shoulder Press.png",
       "overview": "The Dumbbell Shoulder Press is a comprehensive exercise for building overall shoulder strength and size.",
@@ -209,7 +505,7 @@
       ],
       "trainersTip": "Keep your core engaged throughout the exercise to maintain good posture."
     },
-    {
+    "dumbbell-farmers-walk": {
       "title": "Dumbbell Farmers Walk",
       "imagePath": "/images/Dumbbell Farmers Walk.png",
       "overview": "The Dumbbell Farmers Walk is not just a strength exercise but also a test of endurance, engaging multiple muscle groups for a full-body workout.",
@@ -231,7 +527,7 @@
       ],
       "trainersTip": "Keep your shoulders back and chest up throughout the walk to maintain proper posture."
     },
-    {
+    "dumbbell-thrusters": {
       "title": "Dumbbell Thrusters",
       "imagePath": "/images/Dumbbell Thrusters.png",
       "overview": "Dumbbell Thrusters combine a squat with an overhead press, offering a dynamic, compound exercise that works several muscle groups simultaneously.",
@@ -254,7 +550,7 @@
       ],
       "trainersTip": "Ensure a smooth transition between the squat and the press for maximum efficiency."
     },
-    {
+    "dumbbell-single-leg-deadlifts": {
       "title": "Dumbbell Single Leg Deadlifts",
       "imagePath": "/images/Dumbbell Single Leg Deadlifts.png",
       "overview": "Dumbbell Single Leg Deadlifts are excellent for improving balance and stability, targeting the hamstrings and glutes.",
@@ -276,7 +572,7 @@
       ],
       "trainersTip": "Focus on keeping your hips square to the ground to engage the correct muscles."
     },
-    {
+    "dumbbell-lunges": {
       "title": "Dumbbell Lunges",
       "imagePath": "/images/Dumbbell Lunges.png",
       "overview": "Dumbbell Lunges are a staple lower body exercise, effective for building leg strength and improving balance.",
@@ -297,7 +593,7 @@
       ],
       "trainersTip": "Keep your front knee in line with your foot and avoid letting it go past your toes."
     },
-    {
+    "dumbbell-romanian-deadlifts": {
       "title": "Dumbbell Romanian Deadlifts",
       "imagePath": "/images/Dumbbell Romanian Deadlifts.png",
       "overview": "Dumbbell Romanian Deadlifts target the hamstrings and glutes, essential for lower back health and posterior chain strength.",
@@ -318,7 +614,7 @@
       ],
       "trainersTip": "Keep your back straight throughout the movement to avoid strain."
     },
-    {
+    "dumbbell-swing": {
       "title": "Dumbbell Swing",
       "imagePath": "/images/Dumbbell Swing.png",
       "overview": "The Dumbbell Swing is an explosive exercise that works the entire body, particularly the hips and core.",
@@ -341,7 +637,7 @@
       ],
       "trainersTip": "Focus on using your hips to drive the movement, not your arms."
     },
-    {
+    "dumbbell-renegade-rows": {
       "title": "Dumbbell Renegade Rows",
       "imagePath": "/images/Dumbbell Renegade Rows.png",
       "overview": "Dumbbell Renegade Rows combine a plank with a row, targeting the core, back, and arms.",
@@ -363,7 +659,7 @@
       ],
       "trainersTip": "Keep your body as stable as possible to engage the core muscles effectively."
     },
-    {
+    "dumbbell-rear-delt-flys": {
       "title": "Dumbbell Rear Delt Flys",
       "imagePath": "/images/Dumbbell Rear Delt Flys.png",
       "overview": "Dumbbell Rear Delt Flys target the often-neglected rear deltoids, crucial for shoulder health and posture.",
@@ -383,7 +679,7 @@
       ],
       "trainersTip": "Avoid using momentum; lift the weights with control."
     },
-    {
+    "dumbbell-scapular-rows": {
       "title": "Dumbbell Scapular Rows",
       "imagePath": "/images/Dumbbell Scapular Rows.png",
       "overview": "Dumbbell Scapular Rows are focused on strengthening the scapular muscles, crucial for shoulder stability and upper back strength.",
@@ -405,7 +701,7 @@
       ],
       "trainersTip": "Focus on the movement of your shoulder blades, not your arm, to effectively target the scapular muscles."
     },
-    {
+    "dumbbell-russian-twists": {
       "title": "Dumbbell Russian Twists",
       "imagePath": "/images/Dumbbell Russian Twists.png",
       "overview": "Dumbbell Russian Twists are a dynamic core exercise, targeting the obliques and improving rotational strength.",
@@ -425,7 +721,7 @@
       ],
       "trainersTip": "Keep your movements controlled and focus on engaging your core muscles."
     },
-    {
+    "dumbbell-hammer-curls": {
       "title": "Dumbbell Hammer Curls",
       "imagePath": "/images/Dumbbell Hammer Curls.png",
       "overview": "Dumbbell Hammer Curls are a variation of traditional bicep curls, targeting the biceps and forearms for enhanced arm strength.",
@@ -446,7 +742,7 @@
       ],
       "trainersTip": "Keep your wrists straight throughout the exercise to maximize bicep and forearm engagement."
     },
-    {
+    "dumbbell-chest-press": {
       "title": "Dumbbell Chest Press",
       "imagePath": "/images/Dumbbell Chest Press.png",
       "overview": "The Dumbbell Chest Press is a fundamental exercise for building chest strength and muscle, offering a range of motion and muscle activation.",
@@ -467,7 +763,7 @@
       ],
       "trainersTip": "Focus on a controlled movement and avoid locking your elbows at the top."
     },
-    {
+    "dumbbell-decline-chest-press": {
       "title": "Dumbbell Decline Chest Press",
       "imagePath": "/images/Dumbbell Decline Chest Press.png",
       "overview": "Dumbbell Decline Chest Press specifically targets the lower pectoral muscles, enhancing the definition and strength of the lower chest.",
@@ -488,7 +784,7 @@
       ],
       "trainersTip": "Ensure a full range of motion for maximum muscle engagement. Avoid bouncing the weights at the bottom."
     },
-    {
+    "dumbbell-decline-chest-flys": {
       "title": "Dumbbell Decline Chest Flys",
       "imagePath": "/images/Dumbbell Decline Chest Flys.png",
       "overview": "Dumbbell Decline Chest Flys focus on the lower chest, stretching and contracting the muscles for improved definition and strength.",
@@ -508,7 +804,7 @@
       ],
       "trainersTip": "Keep the movement smooth and controlled, focusing on the stretch and contraction of the chest muscles."
     },
-    {
+    "dumbbell-chest-fly": {
       "title": "Dumbbell Chest Fly",
       "imagePath": "/images/Dumbbell Chest Fly.png",
       "overview": "Dumbbell Chest Fly is an effective exercise for targeting the pectoral muscles, enhancing chest width and flexibility.",
@@ -528,7 +824,7 @@
       ],
       "trainersTip": "Focus on the stretch in your chest at the bottom of the movement."
     },
-    {
+    "dumbbell-incline-chest-press": {
       "title": "Dumbbell Incline Chest Press",
       "imagePath": "/images/Dumbbell Incline Chest Press.png",
       "overview": "The Dumbbell Incline Chest Press targets the upper chest, offering a comprehensive workout for the upper pectoral muscles.",
@@ -549,7 +845,7 @@
       ],
       "trainersTip": "Press the dumbbells in a smooth, controlled motion, avoiding locking your elbows at the top."
     },
-    {
+    "dumbbell-incline-chest-flys": {
       "title": "Dumbbell Incline Chest Flys",
       "imagePath": "/images/Dumbbell Incline Chest Flys.png",
       "overview": "Dumbbell Incline Chest Flys are designed to isolate and target the upper chest muscles, enhancing the overall shape and strength.",
@@ -569,7 +865,7 @@
       ],
       "trainersTip": "Maintain a constant angle in your elbows throughout the exercise."
     },
-    {
+    "dumbbell-pullover": {
       "title": "Dumbbell Pullover",
       "imagePath": "/images/Dumbbell Pullover.png",
       "overview": "Dumbbell Pullover is a unique exercise that works both the chest and back muscles, enhancing upper body flexibility and strength.",
@@ -590,7 +886,7 @@
       ],
       "trainersTip": "Keep your hips down and focus on moving through your shoulders and arms."
     },
-    {
+    "dumbbell-skull-crushers": {
       "title": "Dumbbell Skull Crushers",
       "imagePath": "/images/Dumbbell Skull Crushers.png",
       "overview": "Dumbbell Skull Crushers are an excellent tricep isolation exercise, focusing on the triceps for improved arm definition and strength.",
@@ -609,7 +905,7 @@
       ],
       "trainersTip": "Perform the movement with control, keeping your elbows fixed in place."
     },
-    {
+    "dumbbell-goblet-squat": {
       "title": "Dumbbell Goblet Squat",
       "imagePath": "/images/Dumbbell Goblet Squat.png",
       "overview": "The Dumbbell Goblet Squat is a versatile lower body exercise that enhances strength and flexibility, particularly in the quads and glutes.",
@@ -630,7 +926,7 @@
       ],
       "trainersTip": "Keep your weight centered and your knees in line with your toes throughout the squat."
     },
-    {
+    "dumbbell-glute-bridge": {
       "title": "Dumbbell Glute Bridge",
       "imagePath": "/images/Dumbbell Glute Bridge.png",
       "overview": "The Dumbbell Glute Bridge is a powerful exercise for targeting the glutes and hamstrings, enhancing lower body strength.",
@@ -651,7 +947,7 @@
       ],
       "trainersTip": "Focus on driving through your heels to maximize glute activation."
     },
-    {
+    "dumbbell-goblet-split-squat": {
       "title": "Dumbbell Goblet Split Squat",
       "imagePath": "/images/Dumbbell Goblet Split Squat.png",
       "overview": "Dumbbell Goblet Split Squats are excellent for building lower body strength, particularly targeting each leg individually.",
@@ -672,7 +968,7 @@
       ],
       "trainersTip": "Keep your torso upright and front knee in line with your foot."
     },
-    {
+    "dumbbell-iron-cross": {
       "title": "Dumbbell Iron Cross",
       "imagePath": "/images/Dumbbell Iron Cross.png",
       "overview": "The Dumbbell Iron Cross is a challenging upper body exercise that works the shoulders, chest, and upper back.",
@@ -693,7 +989,7 @@
       ],
       "trainersTip": "Perform the movement with controlled motion to avoid strain."
     },
-    {
+    "dumbbell-spell-caster": {
       "title": "Dumbbell Spell Caster",
       "imagePath": "/images/Dumbbell Spell Caster.png",
       "overview": "The Dumbbell Spell Caster is a dynamic exercise that combines elements of strength and coordination, engaging multiple muscle groups.",
@@ -715,7 +1011,7 @@
       ],
       "trainersTip": "Focus on maintaining balance and control throughout the movement. Keep the core engaged and avoid twisting the torso excessively. This exercise not only works on your physical strength but also enhances your coordination and proprioception."
     },
-    {
+    "dumbbell-arnold-press": {
       "title": "Dumbbell Arnold Press",
       "imagePath": "/images/Dumbbell Arnold Press.png",
       "overview": "Named after Arnold Schwarzenegger, the Dumbbell Arnold Press combines a press and rotation, targeting multiple aspects of the shoulder muscles.",
@@ -736,7 +1032,7 @@
       ],
       "trainersTip": "Ensure a full range of motion for effective shoulder engagement."
     },
-    {
+    "dumbbell-shrugs": {
       "title": "Dumbbell Shrugs",
       "imagePath": "/images/Dumbbell Shrugs.png",
       "overview": "Dumbbell Shrugs are a simple yet effective exercise for building the trapezius muscles, enhancing neck and shoulder strength.",
@@ -756,7 +1052,7 @@
       ],
       "trainersTip": "Avoid rolling your shoulders; lift them straight up and down."
     },
-    {
+    "dumbbell-front-squat": {
       "title": "Dumbbell Front Squat",
       "imagePath": "/images/Dumbbell Front Squat.png",
       "overview": "The Dumbbell Front Squat is a variation of the traditional squat, placing more emphasis on the upper body and core.",
@@ -777,7 +1073,7 @@
       ],
       "trainersTip": "Keep your elbows up throughout the squat to maintain proper form."
     },
-    {
+    "dumbbell-side-bend": {
       "title": "Dumbbell Side Bend",
       "imagePath": "/images/Dumbbell Side Bend.png",
       "overview": "Dumbbell Side Bends are effective for targeting the oblique muscles, crucial for core strength and side-to-side movement.",
@@ -797,7 +1093,7 @@
       ],
       "trainersTip": "Keep your movements controlled and avoid leaning forward or backward."
     },
-    {
+    "dumbbell-side-lunge": {
       "title": "Dumbbell Side Lunge",
       "imagePath": "/images/Dumbbell Side Lunge.png",
       "overview": "Dumbbell Side Lunges are a great way to work the legs and glutes, focusing on lateral movement and flexibility.",
@@ -816,9 +1112,9 @@
         "Step to the side into a deep lunge, pushing your hips back.",
         "Push off the side foot to return to the starting position."
       ],
-      "trainersTip": "Ensure your lunging knee doesn’t extend past your toes."
+      "trainersTip": "Ensure your lunging knee doesn\u2019t extend past your toes."
     },
-    {
+    "dumbbell-stiff-leg-deadlift": {
       "title": "Dumbbell Stiff Leg Deadlift",
       "imagePath": "/images/Dumbbell Stiff Leg Deadlift.png",
       "overview": "Dumbbell Stiff Leg Deadlifts are essential for developing hamstring and glute strength, improving posture and lower back health.",
@@ -839,7 +1135,7 @@
       ],
       "trainersTip": "Keep your back straight and focus on hinging at the hips."
     },
-    {
+    "dumbbell-concentration-curls": {
       "title": "Dumbbell Concentration Curls",
       "imagePath": "/images/Dumbbell Concentration Curls.png",
       "overview": "Dumbbell Concentration Curls are excellent for isolating the biceps, providing focused tension for muscle growth.",
@@ -858,7 +1154,7 @@
       ],
       "trainersTip": "Focus on squeezing the bicep at the top of the movement for maximum muscle activation."
     },
-    {
+    "dumbbell-step-up": {
       "title": "Dumbbell Step Up",
       "imagePath": "/images/Dumbbell Step Up.png",
       "overview": "Dumbbell Step Ups are a functional exercise that enhances lower body strength and improves balance.",
@@ -879,7 +1175,7 @@
       ],
       "trainersTip": "Drive through your heel as you step up to engage the glutes and hamstrings effectively."
     },
-    {
+    "dumbbell-crunch": {
       "title": "Dumbbell Crunch",
       "imagePath": "/images/Dumbbell Crunch.png",
       "overview": "Dumbbell Crunches add extra resistance to traditional crunches, intensifying the workout for your abdominal muscles.",
@@ -898,7 +1194,7 @@
       ],
       "trainersTip": "Keep the movement controlled, focusing on contracting your abs."
     },
-    {
+    "dumbbell-v-up": {
       "title": "Dumbbell V-Up",
       "imagePath": "/images/Dumbbell V-Up.png",
       "overview": "Dumbbell V-Ups are a challenging core exercise that targets the entire abdominal region for enhanced strength and toning.",
@@ -918,7 +1214,7 @@
       ],
       "trainersTip": "Keep your movements smooth and avoid using momentum."
     },
-    {
+    "dumbbell-external-rotations": {
       "title": "Dumbbell External Rotations",
       "imagePath": "/images/Dumbbell External Rotations.png",
       "overview": "Dumbbell External Rotations are key for strengthening the rotator cuff muscles, crucial for shoulder health and mobility.",
@@ -937,7 +1233,7 @@
       ],
       "trainersTip": "Perform the exercise with light weights to avoid straining the shoulder."
     },
-    {
+    "dumbbell-static-lunge": {
       "title": "Dumbbell Static Lunge",
       "imagePath": "/images/Dumbbell Static Lunge.png",
       "overview": "Dumbbell Static Lunges are a fundamental lower-body exercise that builds strength and stability in the legs and glutes.",
@@ -958,7 +1254,7 @@
       ],
       "trainersTip": "Keep your front knee in line with your foot and avoid letting it go past your toes."
     },
-    {
+    "dumbbell-alternating-shoulder-press": {
       "title": "Dumbbell Alternating Shoulder Press",
       "imagePath": "/images/Dumbbell Alternating Shoulder Press.png",
       "overview": "The Dumbbell Alternating Shoulder Press is a dynamic exercise that enhances shoulder strength and stability, working each shoulder individually.",
@@ -978,7 +1274,7 @@
       ],
       "trainersTip": "Keep your core engaged to maintain good posture throughout the exercise."
     },
-    {
+    "dumbbell-zottman-curls": {
       "title": "Dumbbell Zottman Curls",
       "imagePath": "/images/Dumbbell Zottman Curls.png",
       "overview": "Dumbbell Zottman Curls combine traditional and reverse curls, targeting both the biceps and forearms effectively.",
@@ -998,7 +1294,7 @@
       ],
       "trainersTip": "Focus on the rotation of the wrists to work both the biceps and forearms."
     },
-    {
+    "dumbbell-squat-svend-press": {
       "title": "Dumbbell Squat & Svend Press",
       "imagePath": "/images/Dumbbell Squat & Svend Press.png",
       "overview": "The Dumbbell Squat & Svend Press is a compound exercise that combines a squat with a chest press for a full-body workout.",
@@ -1020,8 +1316,8 @@
       ],
       "trainersTip": "Ensure a full squat and a full press for maximum effectiveness."
     },
-    {
-      "title": "DDumbbell Floor Press",
+    "dumbbell-floor-press": {
+      "title": "Dumbbell Floor Press",
       "imagePath": "/images/Dumbbell Floor Press.png",
       "overview": "Dumbbell Floor Press targets the chest and triceps, offering a safer alternative to the bench press, especially for those with shoulder issues.",
       "relatedLink": null,
@@ -1041,7 +1337,7 @@
       ],
       "trainersTip": "Keep your elbows at a 45-degree angle from your body to reduce shoulder strain."
     },
-    {
+    "bent-over-single-arm-dumbbell-row": {
       "title": "Bent Over Single Arm Dumbbell Row",
       "imagePath": "/images/Bent Over Single Arm Dumbbell Row.png",
       "overview": "The Bent Over Single Arm Dumbbell Row is a unilateral exercise that focuses on strengthening the back and biceps, improving muscular balance.",
@@ -1061,5 +1357,25 @@
         "Lower it back down and repeat."
       ],
       "trainersTip": "Keep your back straight and focus on squeezing your shoulder blade at the top of the row."
+    },
+    "post-work-out-body-stretch": {
+      "title": "Post Work-Out Body Stretch",
+      "imagePath": "/images/Post Work-Out Body Stretch.png",
+      "youtubeId": "7_Gmj7awnWY",
+      "overview": "Stretch and feel good after a good workout.",
+      "relatedLink": null,
+      "musclesWorked": [
+        "Full body"
+      ],
+      "benefits": [
+        "Feels good!",
+        "Long muscles make strong muscles."
+      ],
+      "howTo": [
+        "See the video.",
+        "Watch the video."
+      ],
+      "trainersTip": "Watch carefully."
     }
-]
+  }
+}
